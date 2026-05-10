@@ -1,0 +1,680 @@
+<!DOCTYPE html>
+<html lang="lo">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GXROZ GEAR | ຄວາມເໜືອກວ່າໃນດ້ານເກມມິງ / SUPERIORITY IN GAMING</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@100;200;300;400;600;900&family=Noto+Sans+Lao:wght@200;400;700&display=swap');
+        
+        :root {
+            --accent: #ffffff;
+            --glass: rgba(255, 255, 255, 0.03);
+            --glass-border: rgba(255, 255, 255, 0.08);
+        }
+
+        body { 
+            background-color: #000000; 
+            color: #ffffff; 
+            font-family: 'Inter', 'Noto Sans Lao', sans-serif; 
+            scroll-behavior: smooth; 
+            overflow-x: hidden; 
+        }
+
+        /* Enhanced Background Effects */
+        .hero-bg { 
+            background: radial-gradient(circle at 70% 30%, #1a1a1a 0%, #000000 100%); 
+            position: relative; 
+            overflow: hidden;
+            border: 1px solid var(--glass-border);
+        }
+
+        .hero-bg::after {
+            content: '';
+            position: absolute;
+            top: -50%; left: -50%;
+            width: 200%; height: 200%;
+            background: conic-gradient(from 0deg at 50% 50%, transparent 0%, rgba(255,255,255,0.05) 50%, transparent 100%);
+            animation: rotate 20s linear infinite;
+            pointer-events: none;
+        }
+
+        @keyframes rotate {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+
+        /* Luxury Cards */
+        .category-card { 
+            background: #050505; 
+            border: 1px solid var(--glass-border); 
+            transition: all 0.8s cubic-bezier(0.15, 0.83, 0.66, 1); 
+            position: relative;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-end;
+        }
+
+        .category-card:hover { 
+            border-color: rgba(255,255,255,0.5); 
+            transform: scale(1.02);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.4);
+        }
+        
+        .product-card {
+            background: #050505;
+            border: 1px solid var(--glass-border);
+            transition: all 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+            cursor: pointer;
+            position: relative;
+        }
+
+        .product-card::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(45deg, transparent, rgba(255,255,255,0.05), transparent);
+            transform: translateX(-100%);
+            transition: 0.6s;
+        }
+
+        .product-card:hover::before {
+            transform: translateX(100%);
+        }
+
+        .product-card:hover { 
+            border-color: rgba(255,255,255,0.3); 
+            background: #0a0a0a;
+            transform: translateY(-8px);
+        }
+
+        .img-luxury { 
+            filter: grayscale(1) brightness(0.4); 
+            transition: all 1.5s cubic-bezier(0.19, 1, 0.22, 1); 
+            object-fit: cover; width: 100%; height: 100%;
+            position: absolute; top: 0; left: 0; z-index: 0;
+        }
+
+        .category-card:hover .img-luxury { 
+            filter: grayscale(0.2) brightness(0.7); 
+            transform: scale(1.15); 
+        }
+        
+        .content-overlay {
+            position: relative; z-index: 10; padding: 2rem 1.5rem;
+            background: linear-gradient(to top, rgba(0,0,0,1) 0%, rgba(0,0,0,0.8) 40%, transparent 100%);
+        }
+
+        .luxury-text-gradient { 
+            background: linear-gradient(180deg, #ffffff 0%, #666666 100%); 
+            -webkit-background-clip: text; 
+            -webkit-text-fill-color: transparent; 
+        }
+
+        .nav-blur { 
+            backdrop-filter: blur(30px); 
+            background: rgba(0, 0, 0, 0.85); 
+            border-bottom: 1px solid var(--glass-border);
+        }
+
+        .letter-spacing-xl { letter-spacing: 0.5em; }
+        .letter-spacing-lg { letter-spacing: 0.25em; }
+        
+        .btn-luxury {
+            position: relative; overflow: hidden;
+            border: 1px solid rgba(255,255,255,0.2);
+            transition: all 0.5s cubic-bezier(0.19, 1, 0.22, 1);
+            background: transparent;
+        }
+
+        .btn-luxury:hover {
+            border-color: #ffffff;
+            box-shadow: 0 0 20px rgba(255,255,255,0.1);
+        }
+
+        /* Modal Enhanced */
+        .modal-overlay {
+            display: none; position: fixed; top: 0; left: 0;
+            width: 100%; height: 100%; background: rgba(0,0,0,0.95);
+            z-index: 100; backdrop-filter: blur(20px);
+            align-items: center; justify-content: center;
+        }
+
+        .modal-content {
+            background: linear-gradient(145deg, #080808 0%, #000000 100%);
+            border: 1px solid rgba(255,255,255,0.1);
+            max-width: 1100px; width: 95%; max-height: 90vh; overflow-y: auto;
+            box-shadow: 0 50px 100px rgba(0,0,0,0.8);
+            animation: fadeIn 0.6s cubic-bezier(0.19, 1, 0.22, 1);
+        }
+
+        /* --- New Auth Pop-up Style --- */
+        .auth-overlay {
+            display: none; position: fixed; top: 0; left: 0;
+            width: 100%; height: 100%; background: rgba(0,0,0,0.95);
+            z-index: 200; backdrop-filter: blur(20px);
+            align-items: center; justify-content: center;
+        }
+
+        .auth-card {
+            background: #080808; border: 1px solid var(--glass-border);
+            width: 90%; max-width: 400px; padding: 3rem; position: relative;
+            animation: fadeIn 0.6s cubic-bezier(0.19, 1, 0.22, 1);
+        }
+
+        .auth-input {
+            width: 100%; background: transparent; border-bottom: 1px solid rgba(255,255,255,0.1);
+            padding: 1rem 0; margin-bottom: 1.5rem; color: white; font-size: 10px;
+            text-transform: uppercase; letter-spacing: 0.2em; outline: none; transition: 0.3s;
+        }
+
+        .auth-input:focus { border-bottom-color: white; }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px) scale(0.98); } 
+            to { opacity: 1; transform: translateY(0) scale(1); }
+        }
+
+        .cart-sidebar {
+            position: fixed; top: 0; right: -100%; width: 100%;
+            max-width: 450px; height: 100%; background: #050505;
+            z-index: 110; transition: 0.8s cubic-bezier(0.19, 1, 0.22, 1);
+            border-left: 1px solid var(--glass-border);
+            box-shadow: -20px 0 50px rgba(0,0,0,0.5);
+        }
+        body.cart-open .cart-sidebar { right: 0; }
+
+        ::-webkit-scrollbar { width: 4px; }
+        ::-webkit-scrollbar-track { background: #000; }
+        ::-webkit-scrollbar-thumb { background: #333; transition: 0.3s; }
+        ::-webkit-scrollbar-thumb:hover { background: #666; }
+
+        .product-card.hidden { display: none !important; }
+
+        /* Admin Styles */
+        .admin-overlay {
+            display: none; position: fixed; top: 0; left: 0;
+            width: 100%; height: 100%; background: rgba(0,0,0,0.98);
+            z-index: 300; backdrop-filter: blur(30px);
+            align-items: center; justify-content: center;
+        }
+        .admin-card {
+            background: #030303; border: 1px solid #333;
+            width: 90%; max-width: 800px; padding: 2rem; position: relative;
+            animation: fadeIn 0.6s cubic-bezier(0.19, 1, 0.22, 1);
+            color: #fff;
+        }
+        .admin-menu-btn {
+            background: #111; border: 1px solid #222; padding: 1rem;
+            text-align: center; cursor: pointer; transition: 0.3s;
+            text-transform: uppercase; font-size: 10px; letter-spacing: 0.1em;
+        }
+        .admin-menu-btn:hover { background: #fff; color: #000; }
+    </style>
+</head>
+<body class="antialiased">
+
+    <div class="bg-black text-[7px] letter-spacing-xl font-light py-4 px-10 flex justify-between items-center border-b border-white/5 uppercase opacity-40">
+        <div class="flex space-x-10">
+            <span class="hover:opacity-100 transition-all cursor-pointer">ໂທ/TEL: +20 97782 487</span>
+            <span class="hover:opacity-100 transition-all cursor-pointer">ອີເມວ/EMAIL: GNO358224@GMAIL.COM</span>
+            <!-- Admin access link added here -->
+            <span onclick="openAdmin()" class="hover:opacity-100 transition-all cursor-pointer font-bold text-red-500 ml-4"><i class="fas fa-shield-alt mr-1"></i> ADMIN</span>
+        </div>
+        <div class="flex items-center space-x-8">
+            <span class="hover:opacity-100 transition cursor-pointer">ຄັງສິນຄ້າ / INVENTORY</span>
+            <span class="hover:opacity-100 transition cursor-pointer">ພາສາລາວ / LAO <i class="fas fa-chevron-down text-[5px] ml-1"></i></span>
+        </div>
+    </div>
+
+    <nav class="py-6 px-10 flex justify-between items-center nav-blur sticky top-0 z-50">
+        <h1 onclick="filterCategory('all')" class="text-xl font-light tracking-[0.6em] text-white uppercase flex items-center group cursor-pointer">
+            GXROZ <span class="font-black border-l border-white/20 ml-4 pl-4 opacity-100 group-hover:text-gray-400 transition">GEAR</span>
+        </h1>
+        <div class="flex items-center space-x-12">
+            <div class="flex items-center space-x-8 text-base">
+                <i onclick="openAuth()" class="far fa-user cursor-pointer opacity-40 hover:opacity-100 transition-all transform hover:scale-110"></i>
+                <i class="far fa-heart cursor-pointer opacity-40 hover:opacity-100 transition-all transform hover:scale-110"></i>
+                <div class="relative cursor-pointer group" onclick="toggleCart()">
+                    <i class="fas fa-shopping-bag opacity-40 group-hover:opacity-100 transition-all transform group-hover:scale-110"></i>
+                    <span id="cart-count" class="absolute -top-2 -right-3 text-[7px] font-bold bg-white text-black w-4 h-4 flex items-center justify-center rounded-full shadow-lg">0</span>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <main class="px-8 py-8">
+        <div class="hero-bg rounded-[4px] p-16 md:p-32 flex flex-col items-start justify-center min-h-[600px]">
+            <div class="inline-block border border-white/20 px-6 py-2 mb-10 backdrop-blur-sm">
+                <span class="text-[8px] letter-spacing-xl font-light uppercase opacity-60">ສະຖາປານິກແຫ່ງຄວາມແມ່ນຍຳ 2026 / ARCHITECTS OF PRECISION</span>
+            </div>
+            <h2 class="text-6xl md:text-8xl font-light leading-[0.85] mb-10 tracking-tighter uppercase">
+                ນິຍາມໃໝ່ / REDEFINING <br>
+                <span class="font-black luxury-text-gradient italic">ແຫ່ງປະສິດທິພາບ. / PERFORMANCE.</span>
+            </h2>
+            <p class="text-white/40 text-[11px] mb-12 max-w-md font-light uppercase letter-spacing-lg leading-loose">
+                ຈຸດສູງສຸດຂອງວິສະວະກຳເກມມິງ. <br>ຄວາມງາມແບບມິນິມອລ ທີ່ມາພ້ອມກັບຄວາມແມ່ນຍຳທີ່ບໍ່ເຄີຍມີມາກ່ອນ. <br><span class="text-[8px] opacity-70">The pinnacle of gaming engineering. Minimalist aesthetics combined with unprecedented precision.</span>
+            </p>
+            <button onclick="document.getElementById('catalog').scrollIntoView()" class="btn-luxury group px-12 py-5 transition-all overflow-hidden">
+                <span class="relative z-10 text-[9px] letter-spacing-xl font-black uppercase group-hover:text-black transition duration-500">ເລືອກຊົມຄໍເລັກຊັນ / EXPLORE COLLECTION</span>
+                <div class="absolute inset-0 bg-white translate-y-full group-hover:translate-y-0 transition-transform duration-700 cubic-bezier(0.19, 1, 0.22, 1)"></div>
+            </button>
+        </div>
+    </main>
+
+    <section id="catalog" class="px-8 pb-20">
+        <div class="flex items-center justify-between mb-12 border-b border-white/10 pb-5">
+            <h2 class="text-[10px] letter-spacing-xl uppercase font-black opacity-40">01. ໝວດໝູ່ສິນຄ້າ / CATEGORIES</h2>
+            <button onclick="filterCategory('all')" class="text-[8px] opacity-30 hover:opacity-100 transition uppercase letter-spacing-xl">ເບິ່ງຄັງສິນຄ້າທັງໝົດ / VIEW ALL</button>
+        </div>
+        <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-6">
+            <div onclick="filterCategory('hardware')" class="category-card aspect-[4/5] group cursor-pointer">
+                <img src="https://img2.pic.in.th/Gemini_Generated_Image_fet7zafet7zafet7.png" class="img-luxury">
+                <div class="content-overlay">
+                    <p class="text-white/40 text-[7px] letter-spacing-xl uppercase mb-2">ຮາດແວ / HARDWARE</p>
+                    <h3 class="text-[11px] font-black uppercase tracking-widest group-hover:tracking-[0.4em] transition-all duration-1000">ຊຸດຄອມພິວເຕີ</h3>
+                </div>
+            </div>
+            <div onclick="filterCategory('workstation')" class="category-card aspect-[4/5] group cursor-pointer">
+                <img src="https://img1.pic.in.th/images/Gemini_Generated_Image_g74ge2g74ge2g74g.png" class="img-luxury">
+                <div class="content-overlay">
+                    <p class="text-white/40 text-[7px] letter-spacing-xl uppercase mb-2">ເວີກສະເຕຊັນ / WORKSTATION</p>
+                    <h3 class="text-[11px] font-black uppercase tracking-widest group-hover:tracking-[0.4em] transition-all duration-1000">ອຸປະກອນສະຕູດິໂອ</h3>
+                </div>
+            </div>
+            <div onclick="filterCategory('streaming')" class="category-card aspect-[4/5] group cursor-pointer">
+                <img src="https://images.unsplash.com/photo-1598550476439-6847785fcea6?auto=format&fit=crop&w=800&q=80" class="img-luxury">
+                <div class="content-overlay">
+                    <p class="text-white/40 text-[7px] letter-spacing-xl uppercase mb-2">ສະຕີມມິງ / STREAMING</p>
+                    <h3 class="text-[11px] font-black uppercase tracking-widest group-hover:tracking-[0.4em] transition-all duration-1000">ຊຸດເຄື່ອງສຽງໂປຣ</h3>
+                </div>
+            </div>
+            <div onclick="filterCategory('peripherals')" class="category-card aspect-[4/5] group cursor-pointer">
+                <img src="https://images.unsplash.com/photo-1527443224154-c4a3942d3acf?auto=format&fit=crop&w=800&q=80" class="img-luxury">
+                <div class="content-overlay">
+                    <p class="text-white/40 text-[7px] letter-spacing-xl uppercase mb-2">ອຸປະກອນເສີມ / PERIPHERALS</p>
+                    <h3 class="text-[11px] font-black uppercase tracking-widest group-hover:tracking-[0.4em] transition-all duration-1000">ຈໍສະແດງຜົນຊັ້ນນຳ</h3>
+                </div>
+            </div>
+            <div onclick="filterCategory('control')" class="category-card aspect-[4/5] group cursor-pointer">
+                <img src="https://images.unsplash.com/photo-1612287230202-1ff1d85d1bdf?auto=format&fit=crop&w=800&q=80" class="img-luxury">
+                <div class="content-overlay">
+                    <p class="text-white/40 text-[7px] letter-spacing-xl uppercase mb-2">ການຄວບຄຸມ / CONTROL</p>
+                    <h3 class="text-[11px] font-black uppercase tracking-widest group-hover:tracking-[0.4em] transition-all duration-1000">ອຸປະກອນຄວບຄຸມ</h3>
+                </div>
+            </div>
+            <div onclick="filterCategory('setup')" class="category-card aspect-[4/5] group cursor-pointer">
+                <img src="https://images.unsplash.com/photo-1614144493832-d719b83f30a5?auto=format&fit=crop&w=800&q=80" class="img-luxury">
+                <div class="content-overlay">
+                    <p class="text-white/40 text-[7px] letter-spacing-xl uppercase mb-2">ການຈັດວາງ / SETUP</p>
+                    <h3 class="text-[11px] font-black uppercase tracking-widest group-hover:tracking-[0.4em] transition-all duration-1000">ໄຟຕົບແຕ່ງ</h3>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="px-8 pb-32">
+        <div class="flex items-center justify-between mb-12 border-b border-white/10 pb-5">
+            <h2 id="current-category-label" class="text-[10px] letter-spacing-xl uppercase font-black opacity-40">02. ສິນຄ້າຍອດນິຍົມ / BEST SELLERS</h2>
+        </div>
+        <div id="product-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-10">
+            <div class="product-card group p-6 flex flex-col" data-category="control" onclick="openProduct('Alpha Core X-1', '129.00', 'ເມົາສ໌ໄຮ້ສາຍລະດັບໄຮເອັນ (High-End)', 'https://images.unsplash.com/photo-1615663245857-ac93bb7c39e7?auto=format&fit=crop&w=500&q=80')">
+                <div class="relative aspect-square overflow-hidden mb-8 bg-[#080808]">
+                    <img src="https://images.unsplash.com/photo-1615663245857-ac93bb7c39e7?auto=format&fit=crop&w=500&q=80" class="w-full h-full object-cover grayscale opacity-50 group-hover:grayscale-0 group-hover:opacity-100 transition-all duration-1000 scale-100 group-hover:scale-110">
+                </div>
+                <h3 class="text-[11px] font-black uppercase letter-spacing-lg mb-2 opacity-90">Alpha Core X-1</h3>
+                <p class="text-white/30 text-[9px] mb-6 uppercase tracking-widest">ລະບົບໄຮ້ສາຍທີ່ແມ່ນຍຳທີ່ສຸດ</p>
+                <div class="mt-auto flex items-center justify-between border-t border-white/10 pt-5">
+                    <span class="text-sm font-light opacity-80">$129.00</span>
+                    <button class="text-[8px] uppercase letter-spacing-lg border border-white/20 px-5 py-2.5 hover:bg-white hover:text-black transition-all">ເພີ່ມ / ADD</button>
+                </div>
+            </div>
+            <div class="product-card group p-6 flex flex-col" data-category="streaming" onclick="openProduct('Acoustic Pro V3', '249.00', 'ຫູຟັງລະບົບສຽງ Spatial Audio', 'https://images.unsplash.com/photo-1546435770-a3e426bf472b?auto=format&fit=crop&w=500&q=80')">
+                <div class="relative aspect-square overflow-hidden mb-8 bg-[#080808]">
+                    <img src="https://images.unsplash.com/photo-1546435770-a3e426bf472b?auto=format&fit=crop&w=500&q=80" class="w-full h-full object-cover grayscale opacity-50 group-hover:grayscale-0 group-hover:opacity-100 transition-all duration-1000 scale-100 group-hover:scale-110">
+                </div>
+                <h3 class="text-[11px] font-black uppercase letter-spacing-lg mb-2 opacity-90">Acoustic Pro V3</h3>
+                <p class="text-white/30 text-[9px] mb-6 uppercase tracking-widest">ສຽງສະຕູດິໂອຮອບທິດທາງ</p>
+                <div class="mt-auto flex items-center justify-between border-t border-white/10 pt-5">
+                    <span class="text-sm font-light opacity-80">$249.00</span>
+                    <button class="text-[8px] uppercase letter-spacing-lg border border-white/20 px-5 py-2.5 hover:bg-white hover:text-black transition-all">ເພີ່ມ / ADD</button>
+                </div>
+            </div>
+            <div class="product-card group p-6 flex flex-col" data-category="control" onclick="openProduct('Zenith Mechanical', '189.00', 'ຄີບອດ 65% ແບບມິນິມອລ', 'https://images.unsplash.com/photo-1511467687858-23d96c32e4ae?auto=format&fit=crop&w=500&q=80')">
+                <div class="relative aspect-square overflow-hidden mb-8 bg-[#080808]">
+                    <img src="https://images.unsplash.com/photo-1511467687858-23d96c32e4ae?auto=format&fit=crop&w=500&q=80" class="w-full h-full object-cover grayscale opacity-50 group-hover:grayscale-0 group-hover:opacity-100 transition-all duration-1000 scale-100 group-hover:scale-110">
+                </div>
+                <h3 class="text-[11px] font-black uppercase letter-spacing-lg mb-2 opacity-90">Zenith Mechanical</h3>
+                <p class="text-white/30 text-[9px] mb-6 uppercase tracking-widest">ດີໄຊນ໌ 65% ທີ່ລຽບງ່າຍ</p>
+                <div class="mt-auto flex items-center justify-between border-t border-white/10 pt-5">
+                    <span class="text-sm font-light opacity-80">$189.00</span>
+                    <button class="text-[8px] uppercase letter-spacing-lg border border-white/20 px-5 py-2.5 hover:bg-white hover:text-black transition-all">ເພີ່ມ / ADD</button>
+                </div>
+            </div>
+            <div class="product-card group p-6 flex flex-col" data-category="peripherals" onclick="openProduct('GX-Ultrawide 4K', '899.00', 'ຈໍເກມມິງ 240Hz ຄວາມລະອຽດສູງ', 'https://images.unsplash.com/photo-1527443224154-c4a3942d3acf?auto=format&fit=crop&w=500&q=80')">
+                <div class="relative aspect-square overflow-hidden mb-8 bg-[#080808]">
+                    <img src="https://images.unsplash.com/photo-1527443224154-c4a3942d3acf?auto=format&fit=crop&w=500&q=80" class="w-full h-full object-cover grayscale opacity-50 group-hover:grayscale-0 group-hover:opacity-100 transition-all duration-1000 scale-100 group-hover:scale-110">
+                </div>
+                <h3 class="text-[11px] font-black uppercase letter-spacing-lg mb-2 opacity-90">GX-Ultrawide 4K</h3>
+                <p class="text-white/30 text-[9px] mb-6 uppercase tracking-widest">ຈໍສະແດງຜົນລະດັບມາສເຕີ</p>
+                <div class="mt-auto flex items-center justify-between border-t border-white/10 pt-5">
+                    <span class="text-sm font-light opacity-80">$899.00</span>
+                    <button class="text-[8px] uppercase letter-spacing-lg border border-white/20 px-5 py-2.5 hover:bg-white hover:text-black transition-all">ເພີ່ມ / ADD</button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <div id="productModal" class="modal-overlay" onclick="handleOutsideClick(event)">
+        <div class="modal-content relative grid grid-cols-1 md:grid-cols-12 overflow-hidden">
+            <button onclick="closeProduct()" class="absolute top-8 right-8 text-white/30 hover:text-white z-[120] transition-all transform hover:rotate-90">
+                <i class="fas fa-times text-2xl"></i>
+            </button>
+            <div class="md:col-span-7 bg-[#0a0a0a] relative overflow-hidden flex items-center justify-center p-12">
+                <div class="absolute inset-0 opacity-10 bg-[url('https://www.transparenttextures.com/patterns/carbon-fibre.png')]"></div>
+                <img id="modalImg" src="" class="relative z-10 w-full h-auto object-contain transition-transform duration-[2s] hover:scale-110 filter drop-shadow-[0_20px_50px_rgba(255,255,255,0.1)]">
+                <div class="absolute bottom-10 left-10 flex space-x-4">
+                    <div class="bg-white/5 backdrop-blur-md border border-white/10 px-4 py-2 rounded-full">
+                        <span class="text-[7px] letter-spacing-xl uppercase font-bold opacity-60">Titanium Build</span>
+                    </div>
+                    <div class="bg-white/5 backdrop-blur-md border border-white/10 px-4 py-2 rounded-full">
+                        <span class="text-[7px] letter-spacing-xl uppercase font-bold opacity-60">0.1ms Latency</span>
+                    </div>
+                </div>
+            </div>
+            <div class="md:col-span-5 p-12 md:p-16 flex flex-col justify-center border-l border-white/5 relative">
+                <div class="mb-2">
+                    <span class="text-[9px] letter-spacing-xl text-white/40 uppercase font-black">ຊຸດສິນຄ້າຈຳນວນຈຳກັດ / LIMITED EDITION</span>
+                </div>
+                <h2 id="modalTitle" class="text-5xl font-light uppercase tracking-tighter mb-4 leading-none luxury-text-gradient">ຊື່ສິນຄ້າ</h2>
+                <div class="flex items-center space-x-4 mb-8">
+                    <span id="modalPrice" class="text-3xl font-light">$0.00</span>
+                    <span class="text-[10px] text-green-500 bg-green-500/10 px-3 py-1 rounded-full uppercase letter-spacing-lg">ມີເຄື່ອງພ້ອມສົ່ງ / IN STOCK</span>
+                </div>
+                <p id="modalDesc" class="text-[11px] letter-spacing-lg text-white/50 uppercase mb-12 leading-loose">
+                    ຍົກລະດັບມາດຕະຖານການໂຕ້ຕອບແບບດິຈິຕອນ. ສ້າງຂຶ້ນດ້ວຍວັດສະດຸ Magnesium ເກຣດດຽວກັບຍານອາວະກາດ.
+                </p>
+                <div class="grid grid-cols-2 gap-8 mb-12 border-y border-white/5 py-8">
+                    <div>
+                        <h4 class="text-[8px] font-black uppercase letter-spacing-xl opacity-30 mb-3">ລຸ້ນ / MODEL</h4>
+                        <p class="text-[10px] uppercase font-light tracking-widest">GX-Alpha 2026</p>
+                    </div>
+                    <div>
+                        <h4 class="text-[8px] font-black uppercase letter-spacing-xl opacity-30 mb-3">ສີ / COLOR</h4>
+                        <p class="text-[10px] uppercase font-light tracking-widest">Obsidian Black</p>
+                    </div>
+                </div>
+                <div class="flex flex-col space-y-4">
+                    <!-- Original Add to Cart Button Kept Intact -->
+                    <button onclick="addToCart()" class="btn-luxury group relative py-4 bg-transparent text-white border-white/20 overflow-hidden transition-all active:scale-95">
+                        <span class="relative z-10 text-[10px] letter-spacing-xl font-black uppercase group-hover:text-black">ເພີ່ມລົງກະຕ່າ / ADD TO CART</span>
+                        <div class="absolute inset-0 bg-white -translate-x-full group-hover:translate-x-0 transition-transform duration-500"></div>
+                    </button>
+                    <!-- New Direct WhatsApp Buy Button -->
+                    <button onclick="orderViaWhatsAppDirect()" class="btn-luxury group relative py-4 bg-green-600 border-none text-white overflow-hidden transition-all active:scale-95">
+                        <span class="relative z-10 text-[10px] letter-spacing-xl font-black uppercase"><i class="fab fa-whatsapp text-sm mr-2"></i> ສັ່ງຊື້ຜ່ານໂທດ່ວນ / BUY NOW (2097782487)</span>
+                        <div class="absolute inset-0 bg-green-500 -translate-x-full group-hover:translate-x-0 transition-transform duration-500"></div>
+                    </button>
+                    <button class="text-[8px] uppercase letter-spacing-xl text-white/30 hover:text-white transition-all py-2 mt-4">
+                        ເບິ່ງຂໍ້ມູນທາງເຕັກນິກ / TECH SPECS <i class="fas fa-arrow-right ml-2 text-[6px]"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Admin Dashboard Modal -->
+    <div id="adminModal" class="admin-overlay" onclick="if(event.target === this) closeAdmin()">
+        <div class="admin-card shadow-2xl">
+            <button onclick="closeAdmin()" class="absolute top-6 right-6 text-white/20 hover:text-red-500 transition text-xl">
+                <i class="fas fa-times"></i>
+            </button>
+            <div class="mb-8 border-b border-gray-800 pb-4">
+                <h2 class="text-2xl font-light uppercase tracking-widest text-red-500"><i class="fas fa-user-shield mr-2"></i> ລະບົບແອັດມິນ / ADMIN DASHBOARD</h2>
+                <p class="text-[10px] text-gray-500 uppercase tracking-widest mt-2">ຈັດການຂໍ້ມູນລະບົບ / System Management</p>
+            </div>
+            
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
+                <div class="admin-menu-btn rounded flex flex-col items-center justify-center py-6">
+                    <i class="fas fa-box text-2xl mb-2 text-white/50"></i>
+                    <span>ຈັດການສິນຄ້າ<br>Products</span>
+                </div>
+                <div class="admin-menu-btn rounded flex flex-col items-center justify-center py-6">
+                    <i class="fas fa-shopping-cart text-2xl mb-2 text-white/50"></i>
+                    <span>ອໍເດີ້<br>Orders</span>
+                </div>
+                <div class="admin-menu-btn rounded flex flex-col items-center justify-center py-6">
+                    <i class="fas fa-users text-2xl mb-2 text-white/50"></i>
+                    <span>ລູກຄ້າ<br>Customers</span>
+                </div>
+                <div class="admin-menu-btn rounded flex flex-col items-center justify-center py-6">
+                    <i class="fas fa-chart-line text-2xl mb-2 text-white/50"></i>
+                    <span>ລາຍງານ<br>Reports</span>
+                </div>
+            </div>
+
+            <div class="bg-[#0a0a0a] border border-gray-800 p-4 rounded text-[10px] uppercase tracking-widest">
+                <p class="text-green-500 mb-2"><i class="fas fa-circle text-[8px] mr-2"></i>ລະບົບພ້ອມໃຊ້ງານ / System Online</p>
+                <p class="text-white/40">ອໍເດີ້ລ່າສຸດ: ຍັງບໍ່ມີຂໍ້ມູນ</p>
+            </div>
+        </div>
+    </div>
+
+    <div id="authModal" class="auth-overlay" onclick="if(event.target === this) closeAuth()">
+        <div class="auth-card">
+            <button onclick="closeAuth()" class="absolute top-6 right-6 text-white/20 hover:text-white transition">
+                <i class="fas fa-times"></i>
+            </button>
+            <div id="loginForm">
+                <h2 class="text-[10px] font-black letter-spacing-xl uppercase mb-10 text-center">ຢືນຢັນຕົວຕົນ / LOGIN</h2>
+                <input type="email" placeholder="ທີ່ຢູອີເມວ / EMAIL" class="auth-input">
+                <input type="password" placeholder="ລະຫັດຜ່ານ / PASSWORD" class="auth-input">
+                <button class="btn-luxury w-full py-5 text-[10px] font-black uppercase letter-spacing-xl hover:bg-white hover:text-black">ເຂົ້າສູ່ລະບົບ / SIGN IN</button>
+                <p class="mt-8 text-center text-[8px] opacity-40 uppercase letter-spacing-lg cursor-pointer hover:opacity-100" onclick="switchAuth('signup')">
+                    ສ້າງບັນຊີໃໝ່ / CREATE ACCOUNT
+                </p>
+            </div>
+            <div id="signupForm" class="hidden">
+                <h2 class="text-[10px] font-black letter-spacing-xl uppercase mb-10 text-center">ລົງທະບຽນໃໝ່ / REGISTER</h2>
+                <input type="text" placeholder="ຊື່ເຕັມ / FULL NAME" class="auth-input">
+                <input type="email" placeholder="ທີ່ຢູອີເມວ / EMAIL" class="auth-input">
+                <input type="password" placeholder="ລະຫັດຜ່ານທີ່ປອດໄພ / SECURE PASSWORD" class="auth-input">
+                <button class="btn-luxury w-full py-5 text-[10px] font-black uppercase letter-spacing-xl hover:bg-white hover:text-black">ລົງທະບຽນ / SIGN UP</button>
+                <p class="mt-8 text-center text-[8px] opacity-40 uppercase letter-spacing-lg cursor-pointer hover:opacity-100" onclick="switchAuth('login')">
+                    ກັບໄປໜ້າເຂົ້າສູ່ລະບົບ / BACK TO LOGIN
+                </p>
+            </div>
+        </div>
+    </div>
+
+    <div id="cartSidebar" class="cart-sidebar flex flex-col p-10">
+        <div class="flex items-center justify-between mb-12 border-b border-white/10 pb-8">
+            <h2 class="text-[12px] letter-spacing-xl uppercase font-black">ຄັງສິນຄ້າທີ່ເລືອກ / CART</h2>
+            <button onclick="toggleCart()" class="text-white/40 hover:text-white transition-all transform hover:rotate-90">
+                <i class="fas fa-times text-lg"></i>
+            </button>
+        </div>
+        <div id="cartItems" class="flex-grow flex flex-col items-center justify-center opacity-30 text-[10px] uppercase letter-spacing-lg text-center leading-loose">
+            ຍັງບໍ່ມີສິນຄ້າໃນຄັງ <br> CART IS EMPTY
+        </div>
+        <div class="border-t border-white/10 pt-10 mt-auto">
+            <div class="flex justify-between mb-8 text-[11px] uppercase letter-spacing-lg">
+                <span class="opacity-40">ລວມເງິນ / TOTAL</span>
+                <span id="cartTotal" class="font-bold">$0.00</span>
+            </div>
+            <!-- Updated button to link to WhatsApp -->
+            <button onclick="orderViaWhatsApp()" class="btn-luxury w-full py-5 text-[10px] font-black uppercase letter-spacing-xl bg-white text-black hover:bg-gray-200 transition-all flex items-center justify-center">
+                <i class="fab fa-whatsapp text-sm mr-2 text-green-600"></i> ຊຳລະເງິນ & ສັ່ງຊື້ (2097782487)
+            </button>
+        </div>
+    </div>
+
+    <footer class="bg-black text-white pt-32 pb-12 px-10 border-t border-white/10">
+        <div class="grid grid-cols-2 md:grid-cols-4 gap-16 mb-24">
+            <div class="col-span-2 md:col-span-1">
+                <h2 class="text-lg font-light tracking-[0.6em] uppercase mb-8">GXROZ GEAR</h2>
+                <p class="text-white/30 text-[10px] leading-loose uppercase letter-spacing-lg max-w-[250px]">
+                    ຄວາມງາມແຫ່ງເກມມິງລະດັບພຣີມຽມ ແລະ ຄວາມສົມບູນແບບທີ່ສ້າງຂຶ້ນເພື່ອວິໄສທັດແຫ່ງອະນາຄົດ. / Premium gaming aesthetics and perfection built for a futuristic vision.
+                </p>
+            </div>
+            <div>
+                <h3 class="text-[10px] font-black letter-spacing-xl uppercase mb-8 opacity-40">ຄັງສິນຄ້າ / SHOP</h3>
+                <ul class="text-white/30 text-[9px] space-y-4 uppercase letter-spacing-lg">
+                    <li class="hover:text-white cursor-pointer transition-all">ສິນຄ້າມາໃໝ່ / NEW ARRIVALS</li>
+                    <li class="hover:text-white cursor-pointer transition-all">ລຸ້ນຄລາດສິກ / CLASSICS</li>
+                </ul>
+            </div>
+            <div>
+                <h3 class="text-[10px] font-black letter-spacing-xl uppercase mb-8 opacity-40">ບໍລິການ / SERVICES</h3>
+                <ul class="text-white/30 text-[9px] space-y-4 uppercase letter-spacing-lg">
+                    <li class="hover:text-white cursor-pointer transition-all">ການຈັດສົ່ງ / SHIPPING</li>
+                    <li class="hover:text-white cursor-pointer transition-all">ການຮັບປະກັນ / WARRANTY</li>
+                </ul>
+            </div>
+            <div>
+                <h3 class="text-[10px] font-black letter-spacing-xl uppercase mb-8 opacity-40">ຕິດຕໍ່ເຮົາ / CONTACT</h3>
+                <div class="flex space-x-8 opacity-30">
+                    <i class="fab fa-instagram hover:opacity-100 cursor-pointer"></i>
+                    <i class="fab fa-twitter hover:opacity-100 cursor-pointer"></i>
+                    <!-- Added Whatsapp icon to footer -->
+                    <a href="https://wa.me/8562097782487" target="_blank"><i class="fab fa-whatsapp hover:opacity-100 cursor-pointer text-white"></i></a>
+                </div>
+            </div>
+        </div>
+        <p class="text-center text-[8px] text-white/10 tracking-[0.5em] uppercase">© 2026 GXROZ GEAR. ຄວາມສົມບູນແບບທາງດິຈິຕອນ. / DIGITAL PERFECTION.</p>
+    </footer>
+
+    <script>
+        let currentItem = {};
+        let cartCount = 0;
+        let cartTotalValue = 0;
+
+        // Admin panel script
+        function openAdmin() {
+            document.getElementById('adminModal').style.display = 'flex';
+            document.body.style.overflow = 'hidden';
+        }
+        function closeAdmin() {
+            document.getElementById('adminModal').style.display = 'none';
+            document.body.style.overflow = 'auto';
+        }
+
+        // WhatsApp Order Script
+        function orderViaWhatsApp() {
+            let message = "ສະບາຍດີ, ຂ້ອຍຕ້ອງການສັ່ງຊື້ສິນຄ້າຈາກ GXROZ GEAR 🛒%0A";
+            if(cartCount > 0) {
+                message += "ຈຳນວນ: " + cartCount + " ລາຍການ%0A";
+                message += "ຍອດລວມ: $" + cartTotalValue.toFixed(2) + "%0A";
+            } else {
+                message += "(ຍັງບໍ່ໄດ້ເລືອກສິນຄ້າລົງກະຕ່າ)";
+            }
+            // 856 is Laos country code
+            window.open("https://wa.me/8562097782487?text=" + message, "_blank");
+        }
+
+        function orderViaWhatsAppDirect() {
+            let message = "ສະບາຍດີ, ຂ້ອຍຕ້ອງການສັ່ງຊື້ດ່ວນ: 🛒%0A";
+            message += "- ສິນຄ້າ: " + currentItem.name + "%0A";
+            message += "- ລາຄາ: $" + currentItem.price + "%0A";
+            window.open("https://wa.me/8562097782487?text=" + message, "_blank");
+        }
+
+        // Auth Logic
+        function openAuth() {
+            document.getElementById('authModal').style.display = 'flex';
+            document.body.style.overflow = 'hidden';
+        }
+        function closeAuth() {
+            document.getElementById('authModal').style.display = 'none';
+            document.body.style.overflow = 'auto';
+        }
+        function switchAuth(type) {
+            const login = document.getElementById('loginForm');
+            const signup = document.getElementById('signupForm');
+            if(type === 'signup') {
+                login.classList.add('hidden');
+                signup.classList.remove('hidden');
+            } else {
+                signup.classList.add('hidden');
+                login.classList.remove('hidden');
+            }
+        }
+
+        function handleOutsideClick(event) {
+            if(event.target.id === 'productModal'){
+                closeProduct();
+            }
+        }
+
+        // Filtering Logic
+        function filterCategory(category) {
+            const products = document.querySelectorAll('.product-card');
+            const label = document.getElementById('current-category-label');
+            if(category === 'all') {
+                label.innerText = "02. ສິນຄ້າທັງໝົດ / ALL PRODUCTS";
+            } else {
+                label.innerText = "02. ໝວດໝູ່: " + category.toUpperCase();
+            }
+            document.getElementById('catalog').scrollIntoView({ behavior: 'smooth' });
+            products.forEach(product => {
+                if (category === 'all' || product.getAttribute('data-category') === category) {
+                    product.classList.remove('hidden');
+                } else {
+                    product.classList.add('hidden');
+                }
+            });
+        }
+
+        function openProduct(name, price, desc, img) {
+            currentItem = { name, price, img };
+            document.getElementById('modalTitle').innerText = name;
+            document.getElementById('modalPrice').innerText = '$' + price;
+            document.getElementById('modalDesc').innerText = desc;
+            document.getElementById('modalImg').src = img;
+            document.getElementById('productModal').style.display = 'flex';
+            document.body.style.overflow = 'hidden'; 
+        }
+
+        function closeProduct() {
+            document.getElementById('productModal').style.display = 'none';
+            document.body.style.overflow = 'auto'; 
+        }
+
+        function toggleCart() {
+            document.body.classList.toggle('cart-open');
+        }
+
+        function addToCart() {
+            cartCount++;
+            cartTotalValue += parseFloat(currentItem.price);
+            document.getElementById('cart-count').innerText = cartCount;
+            document.getElementById('cartTotal').innerText = '$' + cartTotalValue.toFixed(2);
+            
+            const cartItems = document.getElementById('cartItems');
+            cartItems.classList.remove('opacity-30', 'justify-center');
+            
+            // Add a visual item to cart
+            if(cartCount === 1) {
+                cartItems.innerHTML = ''; // clear "empty" text
+            }
+            
+            let itemHTML = `
+                <div class="flex items-center space-x-4 mb-4 border-b border-white/5 pb-4 w-full">
+                    <img src="${currentItem.img}" class="w-12 h-12 object-cover rounded opacity-80">
+                    <div class="flex-grow">
+                        <h4 class="text-[9px] font-bold uppercase letter-spacing-lg">${currentItem.name}</h4>
+                        <p class="text-[8px] opacity-60">$${currentItem.price}</p>
+                    </div>
+                </div>
+            `;
+            cartItems.innerHTML += itemHTML;
+            
+            closeProduct();
+            toggleCart();
+        }
+    </script>
+</body>
+</html>
