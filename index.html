@@ -206,7 +206,12 @@
             width: 90%; max-width: 800px; padding: 2rem; position: relative;
             animation: fadeIn 0.6s cubic-bezier(0.19, 1, 0.22, 1);
             color: #fff;
+            margin: auto;
+            border-radius: 8px;
         }
+        .admin-card::-webkit-scrollbar { width: 5px; }
+        .admin-card::-webkit-scrollbar-thumb { background: #444; border-radius: 10px; }
+        
         .admin-menu-btn {
             background: #111; border: 1px solid #222; padding: 1rem;
             text-align: center; cursor: pointer; transition: 0.3s;
@@ -221,7 +226,6 @@
         <div class="flex space-x-10">
             <span class="hover:opacity-100 transition-all cursor-pointer">ໂທ/TEL: +20 97782 487</span>
             <span class="hover:opacity-100 transition-all cursor-pointer">ອີເມວ/EMAIL: GNO358224@GMAIL.COM</span>
-            <!-- Admin access link added here -->
             <span onclick="openAdmin()" class="hover:opacity-100 transition-all cursor-pointer font-bold text-red-500 ml-4"><i class="fas fa-shield-alt mr-1"></i> ADMIN</span>
         </div>
         <div class="flex items-center space-x-8">
@@ -408,12 +412,10 @@
                     </div>
                 </div>
                 <div class="flex flex-col space-y-4">
-                    <!-- Original Add to Cart Button Kept Intact -->
                     <button onclick="addToCart()" class="btn-luxury group relative py-4 bg-transparent text-white border-white/20 overflow-hidden transition-all active:scale-95">
                         <span class="relative z-10 text-[10px] letter-spacing-xl font-black uppercase group-hover:text-black">ເພີ່ມລົງກະຕ່າ / ADD TO CART</span>
                         <div class="absolute inset-0 bg-white -translate-x-full group-hover:translate-x-0 transition-transform duration-500"></div>
                     </button>
-                    <!-- New Direct WhatsApp Buy Button -->
                     <button onclick="orderViaWhatsAppDirect()" class="btn-luxury group relative py-4 bg-green-600 border-none text-white overflow-hidden transition-all active:scale-95">
                         <span class="relative z-10 text-[10px] letter-spacing-xl font-black uppercase"><i class="fab fa-whatsapp text-sm mr-2"></i> ສັ່ງຊື້ຜ່ານໂທດ່ວນ / BUY NOW (2097782487)</span>
                         <div class="absolute inset-0 bg-green-500 -translate-x-full group-hover:translate-x-0 transition-transform duration-500"></div>
@@ -426,9 +428,8 @@
         </div>
     </div>
 
-    <!-- Admin Dashboard Modal -->
-    <div id="adminModal" class="admin-overlay" onclick="if(event.target === this) closeAdmin()">
-        <div class="admin-card shadow-2xl">
+    <div id="adminModal" class="admin-overlay flex items-center justify-center" onclick="if(event.target === this) closeAdmin()">
+       <div class="admin-card shadow-2xl max-h-[90vh] w-[90%] overflow-y-auto m-auto">
             <button onclick="closeAdmin()" class="absolute top-6 right-6 text-white/20 hover:text-red-500 transition text-xl">
                 <i class="fas fa-times"></i>
             </button>
@@ -437,28 +438,82 @@
                 <p class="text-[10px] text-gray-500 uppercase tracking-widest mt-2">ຈັດການຂໍ້ມູນລະບົບ / System Management</p>
             </div>
             
-            <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
-                <div class="admin-menu-btn rounded flex flex-col items-center justify-center py-6">
-                    <i class="fas fa-box text-2xl mb-2 text-white/50"></i>
-                    <span>ຈັດການສິນຄ້າ<br>Products</span>
-                </div>
-                <div class="admin-menu-btn rounded flex flex-col items-center justify-center py-6">
-                    <i class="fas fa-shopping-cart text-2xl mb-2 text-white/50"></i>
-                    <span>ອໍເດີ້<br>Orders</span>
-                </div>
-                <div class="admin-menu-btn rounded flex flex-col items-center justify-center py-6">
-                    <i class="fas fa-users text-2xl mb-2 text-white/50"></i>
-                    <span>ລູກຄ້າ<br>Customers</span>
-                </div>
-                <div class="admin-menu-btn rounded flex flex-col items-center justify-center py-6">
-                    <i class="fas fa-chart-line text-2xl mb-2 text-white/50"></i>
-                    <span>ລາຍງານ<br>Reports</span>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-10 bg-[#0a0a0a] p-6 border border-white/5">
+                <div class="space-y-4">
+                    <h3 class="text-[10px] letter-spacing-xl opacity-50 uppercase mb-4">ເພີ່ມສິນຄ້າໃໝ່ / ADD NEW PRODUCT</h3>
+                    <input type="text" id="p-name" placeholder="ຊື່ສິນຄ້າ / PRODUCT NAME" class="auth-input !mb-4 !text-[10px]">
+                    <input type="number" id="p-price" placeholder="ລາຄາ ($) / PRICE" class="auth-input !mb-4 !text-[10px]">
+                    <select id="p-category" class="auth-input !mb-4 bg-black border-none text-white opacity-60">
+                        <option value="hardware">HARDWARE</option>
+                        <option value="workstation">WORKSTATION</option>
+                        <option value="streaming">STREAMING</option>
+                        <option value="peripherals">PERIPHERALS</option>
+                        <option value="control">CONTROL</option>
+                        <option value="setup">SETUP</option>
+                    </select>
+                </div>  
+                <div class="space-y-4">
+                    <input type="text" id="p-desc" placeholder="ຄຳອະທິບາຍສັ້ນ / SHORT DESCRIPTION" class="auth-input !mb-4 !text-[10px]">
+                    <input type="text" id="p-img" placeholder="URL ຮູບພາບ / IMAGE URL" class="auth-input !mb-4 !text-[10px]">
+                    <button onclick="addNewProduct()" class="btn-luxury w-full py-4 bg-red-600 text-white border-none text-[10px] font-black uppercase mt-4">
+                        ບັນທຶກສິນຄ້າ / SAVE PRODUCT
+                    </button>
                 </div>
             </div>
 
             <div class="bg-[#0a0a0a] border border-gray-800 p-4 rounded text-[10px] uppercase tracking-widest">
                 <p class="text-green-500 mb-2"><i class="fas fa-circle text-[8px] mr-2"></i>ລະບົບພ້ອມໃຊ້ງານ / System Online</p>
                 <p class="text-white/40">ອໍເດີ້ລ່າສຸດ: ຍັງບໍ່ມີຂໍ້ມູນ</p>
+            </div>
+
+            <div class="bg-[#050505] p-6 border border-gray-800 mt-6 rounded text-[10px]">
+                <div class="flex justify-between items-center border-b border-gray-800 pb-4 mb-4">
+                    <h3 class="font-light uppercase tracking-widest text-white italic">
+                        <i class="fas fa-users mr-2 text-blue-500"></i> ລາຍຊື່ລູກຄ້າ / CUSTOMERS
+                    </h3>
+                    <span class="bg-white/10 px-3 py-1 rounded-full font-black"><span id="customerCount">0</span> USER(S)</span>
+                </div>
+                
+                <div class="overflow-x-auto max-h-[200px] overflow-y-auto">
+                    <table class="w-full text-left border-collapse">
+                        <thead>
+                            <tr class="text-[8px] uppercase letter-spacing-lg text-white/40 border-b border-gray-800">
+                                <th class="pb-3 px-2">ຊື່ລູກຄ້າ</th>
+                                <th class="pb-3 px-2">ອີເມວ</th>
+                                <th class="pb-3 px-2">ວັນທີ</th>
+                                <th class="pb-3 px-2 text-right">ຈັດການ</th>
+                            </tr>
+                        </thead>
+                        <tbody id="customerTableBody" class="text-[10px] text-white/80">
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+       
+            <div class="bg-[#050505] p-6 border border-gray-800 mt-6 rounded text-[10px]">
+                <div class="flex justify-between items-center border-b border-gray-800 pb-4 mb-4">
+                    <h3 class="font-light uppercase tracking-widest text-white italic">
+                        <i class="fas fa-bullhorn mr-2 text-yellow-500"></i> ຈັດການປັອບອັບໂຄສະນາ / PROMO
+                    </h3>
+                    <label class="relative inline-flex items-center cursor-pointer">
+                      <input type="checkbox" id="promoToggle" class="sr-only peer">
+                      <div class="w-9 h-5 bg-gray-700 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-4 after:w-4 after:transition-all peer-checked:bg-green-500"></div>
+                      <span class="ml-3 text-[9px] font-medium text-white/50 uppercase tracking-widest">ເປີດໃຊ້ / ON</span>
+                    </label>
+                </div>
+                
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div class="space-y-4">
+                        <input type="text" id="promoInputImg" placeholder="URL ຮູບພາບ / IMAGE URL" class="auth-input !mb-0 !text-[10px]">
+                        <input type="text" id="promoInputText" placeholder="ຂໍ້ຄວາມ / PROMO TEXT" class="auth-input !mb-0 !text-[10px]">
+                    </div>
+                    <div class="space-y-4">
+                        <input type="text" id="promoInputLink" placeholder="ລິ້ງປາຍທາງ / LINK (ໃສ່ # ຖ້າບໍ່ມີ)" class="auth-input !mb-0 !text-[10px]">
+                        <button onclick="savePromoSettings()" class="btn-luxury w-full py-4 bg-yellow-600 text-black border-none text-[10px] font-black uppercase hover:bg-yellow-500">
+                            ບັນທຶກໂຄສະນາ / SAVE PROMO
+                        </button>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
@@ -481,8 +536,8 @@
                 <h2 class="text-[10px] font-black letter-spacing-xl uppercase mb-10 text-center">ລົງທະບຽນໃໝ່ / REGISTER</h2>
                 <input type="text" placeholder="ຊື່ເຕັມ / FULL NAME" class="auth-input">
                 <input type="email" placeholder="ທີ່ຢູອີເມວ / EMAIL" class="auth-input">
-                <input type="password" placeholder="ລະຫັດຜ່ານທີ່ປອດໄພ / SECURE PASSWORD" class="auth-input">
-                <button class="btn-luxury w-full py-5 text-[10px] font-black uppercase letter-spacing-xl hover:bg-white hover:text-black">ລົງທະບຽນ / SIGN UP</button>
+                <input type="password" placeholder="ລະຫັດຜ່ານที่ปອດໄພ / SECURE PASSWORD" class="auth-input">
+                <button onclick="registerCustomer()" class="btn-luxury w-full py-5 text-[10px] font-black uppercase letter-spacing-xl hover:bg-white hover:text-black">ລົງທະບຽນ / SIGN UP</button>
                 <p class="mt-8 text-center text-[8px] opacity-40 uppercase letter-spacing-lg cursor-pointer hover:opacity-100" onclick="switchAuth('login')">
                     ກັບໄປໜ້າເຂົ້າສູ່ລະບົບ / BACK TO LOGIN
                 </p>
@@ -505,7 +560,6 @@
                 <span class="opacity-40">ລວມເງິນ / TOTAL</span>
                 <span id="cartTotal" class="font-bold">$0.00</span>
             </div>
-            <!-- Updated button to link to WhatsApp -->
             <button onclick="orderViaWhatsApp()" class="btn-luxury w-full py-5 text-[10px] font-black uppercase letter-spacing-xl bg-white text-black hover:bg-gray-200 transition-all flex items-center justify-center">
                 <i class="fab fa-whatsapp text-sm mr-2 text-green-600"></i> ຊຳລະເງິນ & ສັ່ງຊື້ (2097782487)
             </button>
@@ -539,7 +593,6 @@
                 <div class="flex space-x-8 opacity-30">
                     <i class="fab fa-instagram hover:opacity-100 cursor-pointer"></i>
                     <i class="fab fa-twitter hover:opacity-100 cursor-pointer"></i>
-                    <!-- Added Whatsapp icon to footer -->
                     <a href="https://wa.me/8562097782487" target="_blank"><i class="fab fa-whatsapp hover:opacity-100 cursor-pointer text-white"></i></a>
                 </div>
             </div>
@@ -547,12 +600,40 @@
         <p class="text-center text-[8px] text-white/10 tracking-[0.5em] uppercase">© 2026 GXROZ GEAR. ຄວາມສົມບູນແບບທາງດິຈິຕອນ. / DIGITAL PERFECTION.</p>
     </footer>
 
+    <div id="alertPopup" class="modal-overlay" style="z-index: 9999;" onclick="if(event.target === this) closeAlert()">
+        <div id="alertCard" class="auth-card text-center !max-w-[350px] !p-8 transform scale-95 transition-all duration-300">
+            <div id="alertIcon" class="text-4xl mb-4"></div>
+            <h3 id="alertTitle" class="text-[12px] font-black uppercase letter-spacing-xl mb-2 text-white">ແຈ້ງເຕືອນ</h3>
+            <p id="alertMessage" class="text-[9px] text-white/50 uppercase letter-spacing-lg mb-6 leading-loose">ຂໍ້ຄວາມ</p>
+            <button onclick="closeAlert()" class="btn-luxury w-full py-3 text-[10px] font-black uppercase hover:bg-white hover:text-black">ຕົກລົງ / OK</button>
+        </div>
+    </div>
+
+    <div id="promoPopup" class="modal-overlay" style="z-index: 2000;" onclick="if(event.target === this) closePromo()">
+        <div class="auth-card !p-0 overflow-hidden !max-w-[450px] relative transform scale-95 transition-all duration-500" id="promoCard">
+            <button onclick="closePromo()" class="absolute top-4 right-4 text-white hover:text-red-500 z-10 bg-black/60 w-8 h-8 rounded-full flex items-center justify-center backdrop-blur-md transition-colors">
+                <i class="fas fa-times"></i>
+            </button>
+            <div class="w-full h-[250px] bg-[#080808] relative">
+                <img id="promoImage" src="" class="w-full h-full object-cover opacity-80">
+                <div class="absolute inset-0 bg-gradient-to-t from-black to-transparent"></div>
+            </div>
+            <div class="p-8 text-center bg-[#050505]">
+                <h2 class="text-[14px] font-black uppercase letter-spacing-xl mb-4 text-yellow-500"><i class="fas fa-star text-[10px] mr-2"></i> ແຈ້ງການພິເສດ / SPECIAL OFFER</h2>
+                <p id="promoText" class="text-[10px] text-white/70 mb-8 leading-loose uppercase tracking-widest">ຂໍ້ຄວາມໂຄສະນາ...</p>
+                <a id="promoLink" href="#" target="_blank" class="btn-luxury block w-full py-4 text-[10px] font-black uppercase letter-spacing-xl bg-white text-black text-center hover:bg-gray-200">
+                    ກົດຮັບສິດທິ / CLAIM NOW
+                </a>
+            </div>
+        </div>
+    </div>
+
     <script>
         let currentItem = {};
         let cartCount = 0;
         let cartTotalValue = 0;
 
-        // Admin panel script
+        // Script พื้นฐาน (UI)
         function openAdmin() {
             document.getElementById('adminModal').style.display = 'flex';
             document.body.style.overflow = 'hidden';
@@ -562,7 +643,6 @@
             document.body.style.overflow = 'auto';
         }
 
-        // WhatsApp Order Script
         function orderViaWhatsApp() {
             let message = "ສະບາຍດີ, ຂ້ອຍຕ້ອງການສັ່ງຊື້ສິນຄ້າຈາກ GXROZ GEAR 🛒%0A";
             if(cartCount > 0) {
@@ -571,7 +651,6 @@
             } else {
                 message += "(ຍັງບໍ່ໄດ້ເລືອກສິນຄ້າລົງກະຕ່າ)";
             }
-            // 856 is Laos country code
             window.open("https://wa.me/8562097782487?text=" + message, "_blank");
         }
 
@@ -582,7 +661,6 @@
             window.open("https://wa.me/8562097782487?text=" + message, "_blank");
         }
 
-        // Auth Logic
         function openAuth() {
             document.getElementById('authModal').style.display = 'flex';
             document.body.style.overflow = 'hidden';
@@ -604,12 +682,9 @@
         }
 
         function handleOutsideClick(event) {
-            if(event.target.id === 'productModal'){
-                closeProduct();
-            }
+            if(event.target.id === 'productModal'){ closeProduct(); }
         }
 
-        // Filtering Logic
         function filterCategory(category) {
             const products = document.querySelectorAll('.product-card');
             const label = document.getElementById('current-category-label');
@@ -643,9 +718,7 @@
             document.body.style.overflow = 'auto'; 
         }
 
-        function toggleCart() {
-            document.body.classList.toggle('cart-open');
-        }
+        function toggleCart() { document.body.classList.toggle('cart-open'); }
 
         function addToCart() {
             cartCount++;
@@ -656,10 +729,7 @@
             const cartItems = document.getElementById('cartItems');
             cartItems.classList.remove('opacity-30', 'justify-center');
             
-            // Add a visual item to cart
-            if(cartCount === 1) {
-                cartItems.innerHTML = ''; // clear "empty" text
-            }
+            if(cartCount === 1) { cartItems.innerHTML = ''; }
             
             let itemHTML = `
                 <div class="flex items-center space-x-4 mb-4 border-b border-white/5 pb-4 w-full">
@@ -671,10 +741,191 @@
                 </div>
             `;
             cartItems.innerHTML += itemHTML;
-            
-            closeProduct();
-            toggleCart();
+            closeProduct(); toggleCart();
         }
+
+        // Script เพิ่มสินค้า (ฝั่ง Client)
+        function addNewProduct() {
+            const name = document.getElementById('p-name').value;
+            const price = document.getElementById('p-price').value;
+            const category = document.getElementById('p-category').value;
+            const desc = document.getElementById('p-desc').value;
+            const img = document.getElementById('p-img').value || 'https://via.placeholder.com/500';
+
+            if (!name || !price) {
+                showAlert('ແຈ້ງເຕືອນ', 'ກະລຸນາໃສ່ຊື່ ແລະ ລາຄາສິນຄ້າ', false);
+                return;
+            }
+
+            const productGrid = document.getElementById('product-grid');
+            const newProductHTML = `
+                <div class="product-card group p-6 flex flex-col" data-category="${category}" onclick="openProduct('${name}', '${price}', '${desc}', '${img}')">
+                    <div class="relative aspect-square overflow-hidden mb-8 bg-[#080808]">
+                        <img src="${img}" class="w-full h-full object-cover grayscale opacity-50 group-hover:grayscale-0 group-hover:opacity-100 transition-all duration-1000 scale-100 group-hover:scale-110">
+                    </div>
+                    <h3 class="text-[11px] font-black uppercase letter-spacing-lg mb-2 opacity-90">${name}</h3>
+                    <p class="text-white/30 text-[9px] mb-6 uppercase tracking-widest">${desc}</p>
+                    <div class="mt-auto flex items-center justify-between border-t border-white/10 pt-5">
+                        <span class="text-sm font-light opacity-80">$${parseFloat(price).toFixed(2)}</span>
+                        <button class="text-[8px] uppercase letter-spacing-lg border border-white/20 px-5 py-2.5 hover:bg-white hover:text-black transition-all">ເພີ່ມ / ADD</button>
+                    </div>
+                </div>
+            `;
+            productGrid.insertAdjacentHTML('afterbegin', newProductHTML);
+
+            document.getElementById('p-name').value = '';
+            document.getElementById('p-price').value = '';
+            document.getElementById('p-desc').value = '';
+            document.getElementById('p-img').value = '';
+            
+            closeAdmin();
+            showAlert('ສຳເລັດ', 'ເພີ່ມສິນຄ້າສຳເລັດແລ້ວ!', true);
+        }
+
+        // Script ระบบ Alert Popup
+        function showAlert(title, message, isSuccess = true) {
+            const popup = document.getElementById('alertPopup');
+            const card = document.getElementById('alertCard');
+            const icon = document.getElementById('alertIcon');
+            
+            document.getElementById('alertTitle').innerText = title;
+            document.getElementById('alertMessage').innerText = message;
+            
+            if (isSuccess) {
+                icon.innerHTML = '<i class="fas fa-check-circle text-green-500"></i>';
+                card.style.border = '1px solid rgba(34, 197, 94, 0.3)';
+            } else {
+                icon.innerHTML = '<i class="fas fa-times-circle text-red-500"></i>';
+                card.style.border = '1px solid rgba(239, 68, 68, 0.3)';
+            }
+            
+            popup.style.display = 'flex';
+            setTimeout(() => card.classList.replace('scale-95', 'scale-100'), 10);
+        }
+
+        function closeAlert() {
+            const card = document.getElementById('alertCard');
+            card.classList.replace('scale-100', 'scale-95');
+            setTimeout(() => document.getElementById('alertPopup').style.display = 'none', 300);
+        }
+
+        // Script ระบบลูกค้าและการสมัครสมาชิก
+        function registerCustomer() {
+            const inputs = document.querySelectorAll('#signupForm .auth-input');
+            const name = inputs[0].value;
+            const email = inputs[1].value;
+            const password = inputs[2].value;
+
+            if(!name || !email || !password) {
+                showAlert('ເກີດຂໍ້ຜິດພາດ', 'ກະລຸນາປ້ອນຂໍ້ມູນໃຫ້ຄົບຖ້ວນ', false);
+                return;
+            }
+
+            let customers = JSON.parse(localStorage.getItem('gxroz_customers')) || [];
+            
+            if(customers.find(c => c.email === email)) {
+                showAlert('ລົງທະບຽນບໍ່ສຳເລັດ', 'ອີເມວນີ້ມີໃນລະບົບແລ້ວ', false);
+                return;
+            }
+
+            const today = new Date().toLocaleDateString('en-GB');
+            customers.push({ id: Date.now(), name: name, email: email, date: today });
+            localStorage.setItem('gxroz_customers', JSON.stringify(customers));
+
+            inputs.forEach(input => input.value = '');
+            
+            document.getElementById('authModal').style.display = 'none';
+            showAlert('ສຳເລັດ', 'ລົງທະບຽນສຳເລັດແລ້ວ! ຍິນດີຕ້ອນຮັບ', true);
+            
+            loadAdminCustomers(); 
+        }
+
+        function loadAdminCustomers() {
+            const tbody = document.getElementById('customerTableBody');
+            const count = document.getElementById('customerCount');
+            if(!tbody) return;
+
+            const customers = JSON.parse(localStorage.getItem('gxroz_customers')) || [];
+            count.innerText = customers.length;
+
+            if(customers.length === 0) {
+                tbody.innerHTML = `<tr><td colspan="4" class="text-center py-6 opacity-40 italic uppercase text-[8px]">ຍັງບໍ່ມີລູກຄ້າໃນລະບົບ</td></tr>`;
+                return;
+            }
+
+            tbody.innerHTML = customers.map(c => `
+                <tr class="border-b border-white/5 hover:bg-white/5 transition-colors">
+                    <td class="py-4 px-2 font-bold">${c.name}</td>
+                    <td class="py-4 px-2 opacity-60">${c.email}</td>
+                    <td class="py-4 px-2 opacity-60">${c.date}</td>
+                    <td class="py-4 px-2 text-right">
+                        <button onclick="deleteCustomer(${c.id})" class="text-red-500 hover:bg-red-500 hover:text-white px-3 py-1 rounded transition-all">ລຶບ</button>
+                    </td>
+                </tr>
+            `).join('');
+        }
+
+        function deleteCustomer(id) {
+            if(confirm('ທ່ານໝັ້ນໃຈບໍ່ທີ່ຈະລຶບລູກຄ້າຄົນນີ້?')) {
+                let customers = JSON.parse(localStorage.getItem('gxroz_customers')) || [];
+                customers = customers.filter(c => c.id !== id);
+                localStorage.setItem('gxroz_customers', JSON.stringify(customers));
+                
+                loadAdminCustomers();
+                showAlert('ສຳເລັດ', 'ລຶບຂໍ້ມູນລູກຄ້າຮຽບຮ້ອຍແລ້ວ', true);
+            }
+        }
+
+        // Script โฆษณา Promo Popup
+        function savePromoSettings() {
+            const promoConfig = {
+                active: document.getElementById('promoToggle').checked,
+                img: document.getElementById('promoInputImg').value || 'https://images.unsplash.com/photo-1542751371-adc38448a05e?auto=format&fit=crop&w=800&q=80',
+                text: document.getElementById('promoInputText').value || 'ລົດແລກແຈກແຖມ! ໂປຣໂມຊັນພິເສດ.',
+                link: document.getElementById('promoInputLink').value || '#'
+            };
+            localStorage.setItem('gxroz_promo', JSON.stringify(promoConfig));
+            showAlert('ສຳເລັດ', 'ບັນທຶກໂຄສະນາຮຽບຮ້ອຍແລ້ວ', true);
+        }
+
+        function loadAdminPromo() {
+            const promoConfig = JSON.parse(localStorage.getItem('gxroz_promo')) || { active: false, img: '', text: '', link: '' };
+            document.getElementById('promoToggle').checked = promoConfig.active;
+            document.getElementById('promoInputImg').value = promoConfig.img;
+            document.getElementById('promoInputText').value = promoConfig.text;
+            document.getElementById('promoInputLink').value = promoConfig.link;
+        }
+
+        function triggerPromoPopup() {
+            const promoConfig = JSON.parse(localStorage.getItem('gxroz_promo'));
+            if (promoConfig && promoConfig.active && !sessionStorage.getItem('promoShown')) {
+                document.getElementById('promoImage').src = promoConfig.img;
+                document.getElementById('promoText').innerText = promoConfig.text;
+                document.getElementById('promoLink').href = promoConfig.link;
+                
+                setTimeout(() => {
+                    const popup = document.getElementById('promoPopup');
+                    const card = document.getElementById('promoCard');
+                    popup.style.display = 'flex';
+                    setTimeout(() => card.classList.replace('scale-95', 'scale-100'), 10);
+                    sessionStorage.setItem('promoShown', 'true');
+                }, 2000); 
+            }
+        }
+
+        function closePromo() {
+            const card = document.getElementById('promoCard');
+            card.classList.replace('scale-100', 'scale-95');
+            setTimeout(() => document.getElementById('promoPopup').style.display = 'none', 300);
+        }
+
+        // โหลดฟังก์ชันทั้งหมดเมื่อเปิดเว็บ
+        window.addEventListener('DOMContentLoaded', () => {
+            loadAdminCustomers(); 
+            loadAdminPromo();     
+            triggerPromoPopup();  
+        });
+
     </script>
 </body>
 </html>
