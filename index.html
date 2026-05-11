@@ -769,7 +769,7 @@
         const firebaseConfig = {
             apiKey: "AIzaSyCt7cPw324ut0vAIbkHdgo15eK-2d_A_3s",
             authDomain: "gxroz-gear.firebaseapp.com",
-            databaseURL: "https://gxroz-gear-default-rtdb.asia-southeast1.firebasedatabase.app",
+            databaseURL: "https://gxroz-gear-default-rtdb.firebaseio.com",
             projectId: "gxroz-gear",
             storageBucket: "gxroz-gear.firebasestorage.app",
             messagingSenderId: "574474542798",
@@ -1279,7 +1279,7 @@
             if(event) event.stopPropagation();
             if(confirm('ທ່ານໝັ້ນໃຈບໍ່ທີ່ຈະລຶບສິນຄ້ານີ້?')) {
                 db.ref('products/' + firebaseKey).remove().then(() => {
-                    showAlert('ສຳເລັດ', 'ລຶບສິນຄ້າຮຽບຮ້ອຍແລ້ວ', true);
+                    showAlert('ສຳເລັດ', 'ລຶບสິນຄ້າຮຽບຮ້ອຍແລ້ວ', true);
                 });
             }
         }
