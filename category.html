@@ -1,0 +1,791 @@
+<!DOCTYPE html>
+<html lang="lo">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Categories - HolaEZ Shop</title>
+        <script src="https://cdn.tailwindcss.com"></script>
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Lao:wght@300;400;500;600;700;800&family=Kanit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+        <style>
+            body {
+                font-family: 'Noto Sans Lao', 'Kanit', sans-serif;
+                background-color: #f8f9fa;
+            }
+
+            button, a, input {
+                -webkit-tap-highlight-color: transparent !important;
+                outline: none !important;
+            }
+            button:focus, a:focus {
+                outline: none !important;
+                box-shadow: none !important;
+            }
+
+            @keyframes slideDown {
+                from { opacity: 0; transform: translateY(-30px); }
+                to { opacity: 1; transform: translateY(0); }
+            }
+            @keyframes fadeIn {
+                from { opacity: 0; }
+                to { opacity: 1; }
+            }
+            .anim-slide-down { animation: slideDown 0.6s ease-out forwards; }
+            .anim-fade-in { opacity: 0; animation: fadeIn 0.8s ease-out forwards; }
+
+            .reveal-item {
+                opacity: 0;
+                transform: translateY(40px) scale(0.95); 
+                transition: all 0.8s cubic-bezier(0.22, 1, 0.36, 1); 
+            }
+            
+            .reveal-item.is-visible {
+                opacity: 1;
+                transform: translateY(0) scale(1);
+            }
+
+            .reveal-item.is-visible.delay-100 { transition-delay: 100ms; }
+            .reveal-item.is-visible.delay-200 { transition-delay: 200ms; }
+            .reveal-item.is-visible.delay-300 { transition-delay: 300ms; }
+            .reveal-item.is-visible.delay-400 { transition-delay: 400ms; }
+            .reveal-item.is-visible.delay-500 { transition-delay: 500ms; }
+            .reveal-item.is-visible.delay-600 { transition-delay: 600ms; }
+
+            /* Animation สำหรับทำให้คลื่นขยับ */
+            @keyframes waveMove {
+                0% { transform: translateX(0); }
+                100% { transform: translateX(-50%); }
+            }
+            
+            .wave-container {
+                position: absolute;
+                bottom: 0;
+                left: 0;
+                width: 200%;
+                height: 100%;
+                display: flex;
+            }
+
+            .wave-fast { animation: waveMove 3s linear infinite; }
+            .wave-medium { animation: waveMove 5s linear infinite; }
+            .wave-slow { animation: waveMove 7s linear infinite; }
+
+            /* ================= LOADING SCREEN CSS (ธีมม่วง) ================= */
+            #preloader {
+                position: fixed;
+                inset: 0;
+                z-index: 9999;
+                background-color: #ffffff;
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                justify-content: center;
+                transition: opacity 0.5s ease;
+            }
+            .spinner {
+                width: 40px;
+                height: 40px;
+                border: 3px solid #f3e8ff;
+                border-radius: 50%;
+                border-top-color: #a855f7;
+                animation: spin 1s ease-in-out infinite;
+            }
+            @keyframes spin {
+                to { transform: rotate(360deg); }
+            }
+
+            /* ตกแต่ง Checkbox Modal */
+            .custom-checkbox:checked {
+                background-color: #7c3aed;
+                border-color: #7c3aed;
+            }
+        </style>
+    </head>
+<body class="min-h-screen text-gray-800 overflow-x-hidden flex flex-col relative">
+    
+    <div id="custom-toast" class="fixed top-5 right-5 z-[200] transform transition-all duration-500 translate-x-[150%] opacity-0 bg-white border-l-4 rounded-xl shadow-[0_10px_40px_rgba(0,0,0,0.1)] p-4 flex items-start gap-3 w-80 pointer-events-none">
+        <div id="toast-icon-container" class="rounded-full p-1 mt-0.5 flex-shrink-0"></div>
+        <div>
+            <h4 id="toast-title" class="font-bold text-[14px] text-gray-800 tracking-tight"></h4>
+            <p id="toast-message" class="text-[13px] text-gray-500 mt-0.5 leading-snug"></p>
+        </div>
+    </div>
+
+    <div class="fixed top-0 left-0 w-full h-[300px] bg-gradient-to-b from-purple-50/50 to-transparent z-[-1] pointer-events-none"></div>
+
+    <div id="preloader">
+        <div class="spinner"></div>
+    </div>
+
+    <div class="fixed top-0 left-0 w-full z-50 p-4 bg-transparent anim-slide-down">
+        <nav class="max-w-6xl mx-auto bg-white/95 backdrop-blur-md rounded-2xl shadow-[0_4px_20px_rgba(168,85,247,0.08)] border border-purple-100 px-6 py-2.5 flex flex-col xl:flex-row justify-between items-center gap-4">
+            
+            <div class="flex items-center flex-shrink-0">
+                <a href="index.html" id="site-logo-nav" class="w-12 h-12 rounded-full bg-gradient-to-br from-purple-500 to-indigo-500 flex items-center justify-center text-white text-xs font-bold shadow-[0_4px_12px_rgba(168,85,247,0.3)] transition-transform duration-200 hover:scale-110 active:scale-95 cursor-pointer overflow-hidden">
+                    Logo
+                </a>
+            </div>
+
+            <div class="hidden md:flex flex-grow justify-center max-w-md w-full">
+                <div class="relative w-full">
+                    <span class="absolute inset-y-0 left-4 flex items-center text-purple-500">
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor" class="w-4 h-4">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="m21 21-5.197-5.197m0 0A7.5 7.5 0 1 0 5.196 5.196a7.5 7.5 0 0 0 10.602 10.602Z" />
+                        </svg>
+                    </span>
+                    <input type="text" placeholder="ຄົ້ນຫາສິນຄ້າ..." class="w-full bg-[#f8f5ff] border border-transparent focus:border-purple-400 focus:bg-white focus:ring-1 focus:ring-purple-400 rounded-full pl-11 pr-4 py-2 text-[13px] font-medium text-gray-700 outline-none transition-all placeholder-gray-400">
+                </div>
+            </div>
+
+            <div class="flex items-center gap-5 pr-1">
+                <div class="hidden lg:flex items-center gap-6 font-bold text-[14px]">
+                    <a href="index.html" class="flex items-center space-x-1.5 hover:text-purple-600 transition font-semibold hover:scale-105 active:scale-95 duration-200 text-gray-500">
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor" class="w-4 h-4">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="m2.25 12 8.954-8.955c.44-.439 1.152-.439 1.591 0L21.75 12M4.5 9.75v10.125c0 .621.504 1.125 1.125 1.125H9.75v-4.875c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125V21h4.125c.621 0 1.125-.504 1.125-1.125V9.75M8.25 21h8.25" />
+                        </svg>
+                        <span>ໜ້າຫຼັກ</span>
+                    </a>
+                    
+                    <a href="category.html" class="flex items-center space-x-1.5 text-purple-600 transition hover:scale-105 active:scale-95 duration-200 font-semibold">
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor" class="w-4 h-4">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M13.5 21v-7.5a.75.75 0 0 1 .75-.75h3a.75.75 0 0 1 .75.75V21m-4.5 0H2.36m11.14 0H18m0 0h3.64m-1.39 0V9.349M3.75 21V9.35m0 0a3.001 3.001 0 0 0 3.75-.615A2.999 2.999 0 0 0 9.75 9.75c.896 0 1.7-.393 2.25-1.016a2.999 2.999 0 0 0 2.25 1.016c.896 0 1.7-.393 2.25-1.016a3.001 3.001 0 0 0 3.75.614m-16.5 0a3.004 3.004 0 0 1-.621-4.72l1.4-6.195A1.5 1.5 0 0 1 5.378 3h13.243a1.5 1.5 0 0 1 1.06.44l1.19 1.189a3 3 0 0 1-.621 4.72M6.75 18h3.75a.75.75 0 0 0 .75-.75V13.5a.75.75 0 0 0-.75-.75H6.75a.75.75 0 0 0-.75.75v3.75c0 .415.336.75.75.75Z" />
+                        </svg>
+                        <span>ສິນຄ້າທົ່ວໄປ</span>
+                    </a>
+
+                  
+                    
+                    <a href="contact.html" class="flex items-center space-x-1.5 hover:text-purple-600 transition font-semibold hover:scale-105 active:scale-95 duration-200 text-gray-500">
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor" class="w-4 h-4">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M20.25 8.511c.884.284 1.5 1.128 1.5 2.097v4.286c0 1.136-.847 2.1-1.98 2.193-.34.027-.68.052-1.02.072v3.091l-3-3c-1.354 0-2.694-.055-4.02-.163a2.115 2.115 0 0 1-.825-.242m9.345-8.334a2.126 2.126 0 0 0-.476-.095 48.64 48.64 0 0 0-8.048 0c-1.131.094-1.976 1.057-1.976 2.192v4.286c0 .837.46 1.58 1.155 1.951m9.345-8.334V6.637c0-1.621-1.152-3.026-2.76-3.235A48.455 48.455 0 0 0 11.25 3c-2.115 0-4.198.137-6.24.402-1.608.209-2.76 1.614-2.76 3.235v6.226c0 1.621 1.152 3.026 2.76 3.235.577.075 1.157.14 1.74.194V21l4.155-4.155" />
+                        </svg>
+                        <span>ຕິດຕໍ່ພວກເຮົາ</span>
+                    </a>
+                </div>
+                
+            
+             
+
+                
+                       
+                </div>
+
+            </div>
+        </nav>
+    </div>
+
+    <main class="flex-grow max-w-6xl mx-auto px-4 pt-[130px] pb-14 w-full relative z-10">
+
+        <div class="text-center mb-10 anim-fade-in">
+            <h1 class="text-2xl md:text-3xl font-black text-gray-800">ໝວດໝູ່ສິນຄ້າທັງໝົດ</h1>
+            <p class="text-gray-500 font-medium mt-1">All Categories</p>
+            <div class="w-12 h-1 bg-gradient-to-r from-purple-500 to-indigo-500 mx-auto mt-4 rounded-full shadow-[0_2px_8px_rgba(168,85,247,0.5)]"></div>
+        </div>
+
+        <div id="dynamic-category-grid" class="grid grid-cols-1 sm:grid-cols-2 gap-4 md:gap-5">
+            </div>
+
+    </main>
+
+    <div class="mt-auto relative z-0">
+        <div class="relative w-full h-16 md:h-24 overflow-hidden -mb-1 z-0">
+            
+            <div class="wave-container wave-slow opacity-30">
+                <svg viewBox="0 0 1440 120" class="w-1/2 h-full" preserveAspectRatio="none"><path fill="#f3e8ff" d="M0,60 C360,120 360,0 720,60 C1080,120 1080,0 1440,60 L1440,120 L0,120 Z"></path></svg>
+                <svg viewBox="0 0 1440 120" class="w-1/2 h-full" preserveAspectRatio="none"><path fill="#f3e8ff" d="M0,60 C360,120 360,0 720,60 C1080,120 1080,0 1440,60 L1440,120 L0,120 Z"></path></svg>
+            </div>
+
+            <div class="wave-container wave-medium opacity-60">
+                <svg viewBox="0 0 1440 120" class="w-1/2 h-full" preserveAspectRatio="none"><path fill="#f3e8ff" d="M0,60 C360,120 360,0 720,60 C1080,120 1080,0 1440,60 L1440,120 L0,120 Z"></path></svg>
+                <svg viewBox="0 0 1440 120" class="w-1/2 h-full" preserveAspectRatio="none"><path fill="#f3e8ff" d="M0,60 C360,120 360,0 720,60 C1080,120 1080,0 1440,60 L1440,120 L0,120 Z"></path></svg>
+            </div>
+
+            <div class="wave-container wave-fast opacity-100">
+                <svg viewBox="0 0 1440 120" class="w-1/2 h-full" preserveAspectRatio="none"><path fill="#ffffff" d="M0,60 C360,120 360,0 720,60 C1080,120 1080,0 1440,60 L1440,120 L0,120 Z"></path></svg>
+                <svg viewBox="0 0 1440 120" class="w-1/2 h-full" preserveAspectRatio="none"><path fill="#ffffff" d="M0,60 C360,120 360,0 720,60 C1080,120 1080,0 1440,60 L1440,120 L0,120 Z"></path></svg>
+            </div>
+
+        </div>
+
+        <footer class="bg-white relative z-10 border-t border-purple-50">
+            <div class="max-w-6xl mx-auto px-4 pb-10 md:pb-14 pt-8">
+                
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 md:gap-12">
+                    
+                    <div class="flex flex-col items-center md:items-start text-center md:text-left">
+                        <div id="footer-logo-preview" class="w-16 h-16 rounded-full bg-gradient-to-br from-purple-500 to-indigo-500 flex items-center justify-center text-white font-bold text-lg mb-4 shadow-[0_8px_16px_rgba(168,85,247,0.3)] overflow-hidden">
+                            Logo
+                        </div>
+                        <h3 class="text-xl font-bold text-gray-800 mb-2">HolaEZ Shop</h3>
+                        <p class="text-sm text-gray-500 leading-relaxed">
+                            ລະບົບ HolaEZ Shop ບໍລິການຈຳໜ່າຍບັນຊີເກມ, ຕື່ມເກມອອນລາຍ ແລະ ອອຟລາຍ ລາຄາຖືກ ປອດໄພ ຮັບປະກັນ 100% ພ້ອມບໍລິການຕະຫຼອດ 24 ຊົ່ວໂມງ.
+                        </p>
+                    </div>
+
+                    <div class="flex flex-col items-center md:items-start">
+                        <h4 class="text-base font-bold text-gray-800 mb-5 relative inline-block">
+                            ເມນູຫຼັກ
+                            <span class="absolute bottom-[-6px] left-1/2 md:left-0 -translate-x-1/2 md:translate-x-0 w-1/2 h-1 bg-purple-500 rounded-full"></span>
+                        </h4>
+                        <ul class="space-y-3 text-sm font-medium text-gray-600 text-center md:text-left">
+                            <li><a href="index.html" class="hover:text-purple-600 hover:translate-x-1 transition-all inline-block">ໜ້າຫຼັກ</a></li>
+                            <li><a href="category.html" class="hover:text-purple-600 hover:translate-x-1 transition-all inline-block">ສິນຄ້າທົ່ວໄປ</a></li>
+                            <li><a href="topup.html" class="hover:text-purple-600 hover:translate-x-1 transition-all inline-block">ຕື່ມເງິນ</a></li>
+                            <li><a href="contact.html" class="hover:text-purple-600 hover:translate-x-1 transition-all inline-block">ຕິດຕໍ່ພວກເຮົາ</a></li>
+                        </ul>
+                    </div>
+
+                    <div class="flex flex-col items-center md:items-start">
+                        <h4 class="text-base font-bold text-gray-800 mb-5 relative inline-block">
+                            ປະຫວັດการໃຊ້ງານ
+                            <span class="absolute bottom-[-6px] left-1/2 md:left-0 -translate-x-1/2 md:translate-x-0 w-1/2 h-1 bg-purple-500 rounded-full"></span>
+                        </h4>
+                        <ul class="space-y-3 text-sm font-medium text-gray-600 text-center md:text-left">
+                            <li><a href="history.html" class="hover:text-purple-600 hover:translate-x-1 transition-all inline-block">ປະຫວັດการຊື້ສິນຄ້າ</a></li>
+                            <li><a href="history.html" class="hover:text-purple-600 hover:translate-x-1 transition-all inline-block">ປະຫວັດการຕື່ມເງິນ</a></li>
+                            <li><a href="#" class="hover:text-purple-600 hover:translate-x-1 transition-all inline-block">ປະຫວັດการປ່ຽນລະຫັດ</a></li>
+                        </ul>
+                    </div>
+
+                    <div class="w-full max-w-sm mx-auto">
+                        <div class="bg-purple-50/50 border border-purple-100 rounded-2xl p-4 shadow-sm">
+                            <div class="flex items-center gap-3 mb-4">
+                                <div id="footer-small-logo-preview" class="w-12 h-12 rounded-full bg-gradient-to-br from-purple-500 to-indigo-500 text-white flex items-center justify-center text-xs font-bold shadow-md overflow-hidden">
+                                    Logo
+                                </div>
+                                <div>
+                                    <h5 class="font-bold text-sm text-gray-800">HolaEZ Shop</h5>
+                                    <p class="text-xs text-purple-500 font-medium">13,524 followers</p>
+                                </div>
+                            </div>
+                            <a id="footer-contact-link" href="#" target="_blank" class="w-full bg-white border border-purple-200 hover:border-purple-300 hover:bg-purple-50 text-purple-700 text-sm font-bold py-2.5 rounded-xl flex justify-center items-center gap-2 transition-all shadow-sm">
+                                <svg class="w-5 h-5 text-blue-600" fill="currentColor" viewBox="0 0 24 24"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>
+                                ติดต่อພວກເຮົາ (Contact)
+                            </a>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+            <div class="bg-purple-50/30 border-t border-purple-100">
+                <div class="max-w-6xl mx-auto px-4 py-6 flex flex-col md:flex-row items-center justify-between gap-4 text-xs text-gray-500 font-medium">
+                    <p>© 2026 HolaEZ Shop. All rights reserved.</p>
+                    <div class="flex gap-4">
+                        <a href="#" class="hover:text-purple-600 transition-colors">ເງື່ອນໄຂการໃຊ້ບໍລິการ</a>
+                        <span class="text-gray-300">|</span>
+                        <a href="#" class="hover:text-purple-600 transition-colors">ນະໂຍບາຍຄວາມເປັນສ່ວນຕົວ</a>
+                    </div>
+                </div>
+            </div>
+        </footer>
+    </div>
+
+    <div id="loginModal" class="fixed inset-0 z-[100] hidden flex items-center justify-center p-4 md:p-0">
+        <div class="absolute inset-0 bg-gray-900/40 backdrop-blur-sm transition-opacity" onclick="toggleModal('loginModal')"></div>
+        
+        <div class="bg-white/95 backdrop-blur-xl rounded-[2.5rem] shadow-[0_20px_60px_rgba(168,85,247,0.15)] border border-white/50 p-8 md:p-10 w-full max-w-[420px] relative z-10 anim-slide-down mx-auto overflow-hidden">
+            <button onclick="toggleModal('loginModal')" class="absolute top-5 right-5 w-8 h-8 flex items-center justify-center rounded-full bg-gray-50 text-gray-400 hover:bg-purple-100 hover:text-purple-600 transition-colors z-20 focus:outline-none">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-4 h-4"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" /></svg>
+            </button>
+
+            <div id="login-section" class="block">
+                <div class="text-center mb-8">
+                    <div class="w-16 h-16 mx-auto rounded-[20px] bg-gradient-to-br from-purple-500 to-indigo-500 text-white flex items-center justify-center font-bold text-xl mb-4 shadow-lg shadow-purple-500/30">Logo</div>
+                    <h2 class="text-2xl font-black text-gray-800 tracking-tight">ຍິນດີຕ້ອນຮັບ</h2>
+                    <p class="text-sm text-gray-500 mt-2 font-medium">ເຂົ້າສູ່ລະບົບເພື່ອສືບຕໍ່</p>
+                </div>
+
+                <form class="space-y-4" onsubmit="handleLogin(event)">
+                    <div>
+                        <label class="block text-[13px] font-bold text-gray-700 mb-1.5 ml-1">ຊື່ຜູ້ໃຊ້ ຫຼື ອີເມວ</label>
+                        <div class="relative">
+                            <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none text-purple-400">
+                                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M15.75 6a3.75 3.75 0 1 1-7.5 0 3.75 3.75 0 0 1 7.5 0ZM4.501 20.118a7.5 7.5 0 0 1 14.998 0A17.933 17.933 0 0 1 12 21.75c-2.676 0-5.216-.584-7.499-1.632Z" /></svg>
+                            </div>
+                            <input type="text" id="login-username" placeholder="admin" required class="w-full pl-11 pr-4 py-3.5 bg-[#f5f3ff] border border-transparent rounded-xl text-sm outline-none focus:bg-white focus:ring-2 focus:ring-purple-500/40 focus:border-purple-500 transition-all text-gray-800 font-medium placeholder-gray-400">
+                        </div>
+                    </div>
+                    
+                    <div>
+                        <div class="flex justify-between items-center mb-1.5 ml-1">
+                            <label class="block text-[13px] font-bold text-gray-700">ລະຫັດຜ່ານ</label>
+                            <button type="button" onclick="switchModalForm('forgot')" class="text-[11px] font-bold text-purple-600 hover:text-purple-700 transition-colors focus:outline-none">ລືມລະຫັດຜ່ານ?</button>
+                        </div>
+                        <div class="relative">
+                            <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none text-purple-400">
+                                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M16.5 10.5V6.75a4.5 4.5 0 1 0-9 0v3.75m-.75 11.25h10.5a2.25 2.25 0 0 0 2.25-2.25v-6.75a2.25 2.25 0 0 0-2.25-2.25H6.75a2.25 2.25 0 0 0-2.25 2.25v6.75a2.25 2.25 0 0 0 2.25 2.25Z" /></svg>
+                            </div>
+                            <input type="password" id="login-password" placeholder="••••••••" required class="w-full pl-11 pr-12 py-3.5 bg-[#f5f3ff] border border-transparent rounded-xl text-sm outline-none focus:bg-white focus:ring-2 focus:ring-purple-500/40 focus:border-purple-500 transition-all text-gray-800 font-medium placeholder-gray-400">
+                            <button type="button" onclick="togglePassword('login-password', 'eye-icon-login')" class="absolute inset-y-0 right-0 pr-4 flex items-center text-gray-400 hover:text-purple-600 focus:outline-none">
+                                <svg id="eye-icon-login" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor" class="w-5 h-5"><path stroke-linecap="round" stroke-linejoin="round" d="M2.036 12.322a1.012 1.012 0 010-.639C3.423 7.51 7.36 4.5 12 4.5c4.638 0 8.573 3.007 9.963 7.178.07.207.07.431 0 .639C20.577 16.49 16.64 19.5 12 19.5c-4.638 0-8.573-3.007-9.963-7.178z" /><path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" /></svg>
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="flex items-center mt-2 ml-1">
+                        <input id="remember-me" type="checkbox" class="w-4 h-4 text-purple-600 bg-white border-gray-300 rounded cursor-pointer focus:ring-purple-500 focus:ring-2 accent-purple-600">
+                        <label for="remember-me" class="ml-2 block text-[13px] text-gray-600 cursor-pointer font-medium">ຈື່ການເຂົ້າສູ່ລະບົບ</label>
+                    </div>
+                    
+                    <button type="submit" class="w-full bg-[#7c3aed] hover:bg-[#6d28d9] text-white font-bold py-3.5 rounded-xl transition-all shadow-[0_8px_20px_rgba(124,58,237,0.3)] hover:shadow-[0_10px_25px_rgba(124,58,237,0.4)] hover:-translate-y-0.5 active:scale-95 mt-6 text-[15px] focus:outline-none">
+                        ເຂົ້າສູ່ລະບົບ
+                    </button>
+                </form>
+                
+                <div class="mt-8 pt-6 border-t border-gray-100 text-center">
+                    <p class="text-[13px] text-gray-500 font-medium">ຍັງບໍ່ມີບັນຊີ? <button type="button" onclick="switchModalForm('register')" class="text-purple-600 font-bold hover:text-purple-700 transition-colors ml-1 focus:outline-none">ສະໝັກສະມາຊິກ</button></p>
+                </div>
+            </div>
+
+            <div id="register-section" class="hidden">
+                <div class="text-center mb-6">
+                    <div class="w-14 h-14 mx-auto rounded-[20px] bg-gradient-to-br from-purple-500 to-indigo-500 text-white flex items-center justify-center font-bold text-xl mb-3 shadow-lg shadow-purple-500/30">Logo</div>
+                    <h2 class="text-2xl font-black text-gray-800 tracking-tight">ສ້າງບັນຊີໃໝ່</h2>
+                </div>
+
+                <form id="real-register-form" class="space-y-4" onsubmit="handleRegister(event)">
+                    <div>
+                        <label class="block text-[12px] font-bold text-gray-700 mb-1.5 ml-1">ຊື່ຜູ້ໃຊ້ງານ</label>
+                        <input type="text" id="reg-username" pattern="^[a-zA-Z0-9_-]{5,20}$" placeholder="Username" class="w-full px-4 py-3 bg-[#f5f3ff] border border-transparent rounded-xl text-sm outline-none focus:bg-white focus:ring-2 focus:ring-purple-500/40 focus:border-purple-500 transition-all text-gray-800 font-medium placeholder-gray-400" required title="ໃຊ້ໄດ້ສະເພາະ a-z, A-Z, 0-9, _ ແລະ - ຄວາມຍາວ 5-20 ຕົວອັກສອນ">
+                        <p class="text-[10px] text-gray-500 mt-1.5 ml-1 font-medium">ໃຊ້ໄດ້ສະເພາະ a-z, A-Z, 0-9, _ ແລະ - ຄວາມຍາວ 5-20 ຕົວອັກສອນ</p>
+                    </div>
+                    
+                    <div>
+                        <label class="block text-[12px] font-bold text-gray-700 mb-1.5 ml-1">PIN 6 ຫຼັກ</label>
+                        <input type="password" id="reg-pin" inputmode="numeric" maxlength="6" pattern="\d{6}" placeholder="••••••" class="w-full px-4 py-3 bg-[#f5f3ff] border border-transparent rounded-xl text-sm outline-none focus:bg-white focus:ring-2 focus:ring-purple-500/40 focus:border-purple-500 transition-all text-gray-800 font-bold placeholder-gray-400 tracking-[0.5em] text-center" required title="ກະລຸນາໃສ່ຕົວເລກ 6 ຫຼັກ">
+                    </div>
+
+                    <div>
+                        <label class="block text-[12px] font-bold text-gray-700 mb-1.5 ml-1">ລະຫັດຜ່ານ</label>
+                        <div class="relative">
+                            <input type="password" id="reg-password" oninput="checkPasswordStrength()" placeholder="••••••••" class="w-full pl-4 pr-12 py-3 bg-[#f5f3ff] border border-transparent rounded-xl text-sm outline-none focus:bg-white focus:ring-2 focus:ring-purple-500/40 focus:border-purple-500 transition-all text-gray-800 font-medium placeholder-gray-400" required minlength="6">
+                            <button type="button" onclick="togglePassword('reg-password', 'eye-icon-pass')" class="absolute inset-y-0 right-0 pr-4 flex items-center text-gray-400 hover:text-purple-600 focus:outline-none">
+                                <svg id="eye-icon-pass" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor" class="w-5 h-5"><path stroke-linecap="round" stroke-linejoin="round" d="M2.036 12.322a1.012 1.012 0 010-.639C3.423 7.51 7.36 4.5 12 4.5c4.638 0 8.573 3.007 9.963 7.178.07.207.07.431 0 .639C20.577 16.49 16.64 19.5 12 19.5c-4.638 0-8.573-3.007-9.963-7.178z" /><path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" /></svg>
+                            </button>
+                        </div>
+                    </div>
+
+                    <div>
+                        <label class="block text-[12px] font-bold text-gray-700 mb-1.5 ml-1">ຢືນຢັນລະຫັດຜ່ານອີກຄັ້ງ</label>
+                        <div class="relative">
+                            <input type="password" id="reg-confirm-password" placeholder="••••••••" class="w-full pl-4 pr-12 py-3 bg-[#f5f3ff] border border-transparent rounded-xl text-sm outline-none focus:bg-white focus:ring-2 focus:ring-purple-500/40 focus:border-purple-500 transition-all text-gray-800 font-medium placeholder-gray-400" required minlength="6">
+                            <button type="button" onclick="togglePassword('reg-confirm-password', 'eye-icon-confirm')" class="absolute inset-y-0 right-0 pr-4 flex items-center text-gray-400 hover:text-purple-600 focus:outline-none">
+                                <svg id="eye-icon-confirm" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor" class="w-5 h-5"><path stroke-linecap="round" stroke-linejoin="round" d="M2.036 12.322a1.012 1.012 0 010-.639C3.423 7.51 7.36 4.5 12 4.5c4.638 0 8.573 3.007 9.963 7.178.07.207.07.431 0 .639C20.577 16.49 16.64 19.5 12 19.5c-4.638 0-8.573-3.007-9.963-7.178z" /><path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" /></svg>
+                            </button>
+                        </div>
+                    </div>
+
+                    <div>
+                        <div class="flex justify-between items-center mb-1.5 ml-1">
+                            <span class="text-[11px] font-bold text-gray-500">ຄວາມປອດໄພຂອງລະຫັດຜ່ານ</span>
+                            <span id="strength-text" class="text-[10px] font-bold text-red-500">ອ່ອນແອ</span>
+                        </div>
+                        <div class="w-full bg-gray-200 rounded-full h-1.5 flex">
+                            <div id="strength-bar" class="bg-red-500 h-1.5 rounded-full transition-all duration-300" style="width: 0%"></div>
+                        </div>
+                    </div>
+
+                    <div class="mt-2 border border-gray-200 bg-gray-50 rounded-xl p-3 flex items-center justify-between shadow-sm">
+                        <div class="flex items-center gap-3">
+                            <div class="w-5 h-5 border-2 border-[#f97316] border-t-transparent rounded-full animate-spin"></div>
+                            <span class="text-xs font-medium text-gray-600">ກຳລັງກວດສອບ...</span>
+                        </div>
+                        <div class="flex flex-col items-end leading-none gap-0.5">
+                            <span class="text-[10px] font-black tracking-wide text-gray-600">CLOUDFLARE</span>
+                            <span class="text-[8px] text-gray-400 hover:underline cursor-pointer">ຄວາມເປັນສ່ວນຕົວ</span>
+                        </div>
+                    </div>
+
+                    <button type="submit" class="w-full bg-[#7c3aed] hover:bg-[#6d28d9] text-white font-bold py-3.5 rounded-xl transition-all shadow-[0_8px_20px_rgba(124,58,237,0.3)] hover:shadow-[0_10px_25px_rgba(124,58,237,0.4)] hover:-translate-y-0.5 active:scale-95 mt-4 text-[15px] focus:outline-none">
+                        ສະໝັກສະມາຊິກ
+                    </button>
+                </form>
+                
+                <div class="mt-6 pt-5 border-t border-gray-100 text-center">
+                    <p class="text-[13px] text-gray-500 font-medium">ມີບັນຊີແລ້ວ? <button type="button" onclick="switchModalForm('login')" class="text-purple-600 font-bold hover:text-purple-700 transition-colors ml-1 focus:outline-none">ເຂົ້າສູ່ລະບົບ</button></p>
+                </div>
+            </div>
+
+            <div id="forgot-section" class="hidden">
+                <div class="text-center mb-8">
+                    <div class="w-16 h-16 mx-auto rounded-[20px] bg-gradient-to-br from-purple-500 to-indigo-500 text-white flex items-center justify-center font-bold text-xl mb-4 shadow-lg shadow-purple-500/30">Logo</div>
+                    <h2 class="text-2xl font-black text-gray-800 tracking-tight">ລືມລະຫັດຜ່ານ</h2>
+                    <p class="text-sm text-gray-500 mt-2 font-medium">ກະລຸນາໃສ່ອີເມວຂອງທ່ານເພື່ອຣີເຊັດລະຫັດຜ່ານ</p>
+                </div>
+
+                <form class="space-y-4" onsubmit="handleForgotPassword(event)">
+                    <div>
+                        <label class="block text-[13px] font-bold text-gray-700 mb-1.5 ml-1">ອີເມວທີ່ລົງທະບຽນ</label>
+                        <div class="relative">
+                            <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none text-purple-400">
+                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor" class="w-5 h-5"><path stroke-linecap="round" stroke-linejoin="round" d="M21.75 6.75v10.5a2.25 2.25 0 01-2.25 2.25h-15a2.25 2.25 0 01-2.25-2.25V6.75m19.5 0A2.25 2.25 0 0019.5 4.5h-15a2.25 2.25 0 00-2.25 2.25m19.5 0v.243a2.25 2.25 0 01-1.07 1.916l-7.5 4.615a2.25 2.25 0 01-2.36 0L3.32 8.91a2.25 2.25 0 01-1.07-1.916V6.75" /></svg>
+                            </div>
+                            <input type="email" required placeholder="example@mail.com" class="w-full pl-11 pr-4 py-3.5 bg-[#f5f3ff] border border-transparent rounded-xl text-sm outline-none focus:bg-white focus:ring-2 focus:ring-purple-500/40 focus:border-purple-500 transition-all text-gray-800 font-medium placeholder-gray-400">
+                        </div>
+                    </div>
+                    
+                    <button type="submit" class="w-full bg-[#7c3aed] hover:bg-[#6d28d9] text-white font-bold py-3.5 rounded-xl transition-all shadow-[0_8px_20px_rgba(124,58,237,0.3)] hover:shadow-[0_10px_25px_rgba(124,58,237,0.4)] hover:-translate-y-0.5 active:scale-95 mt-6 text-[15px] focus:outline-none">
+                        ສົ່ງລິ້ງຣີເຊັດລະຫັດຜ່ານ
+                    </button>
+                </form>
+                
+                <div class="mt-8 pt-6 border-t border-gray-100 text-center">
+                    <p class="text-[13px] text-gray-500 font-medium">ຈື່ລະຫັດຜ່ານແລ້ວ? <button type="button" onclick="switchModalForm('login')" class="text-purple-600 font-bold hover:text-purple-700 transition-colors ml-1 focus:outline-none">ເຂົ້າສູ່ລະບົບ</button></p>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <script>
+        // ================= ระบบ Toast แจ้งเตือนสวยๆ =================
+        function showToast(title, message, type = 'success') {
+            const toast = document.getElementById('custom-toast');
+            const titleEl = document.getElementById('toast-title');
+            const msgEl = document.getElementById('toast-message');
+            const iconContainer = document.getElementById('toast-icon-container');
+
+            titleEl.textContent = title;
+            msgEl.textContent = message;
+
+            if (type === 'success') {
+                toast.className = "fixed top-5 right-5 z-[200] transform transition-all duration-500 translate-x-0 opacity-100 bg-white border-l-4 border-green-500 rounded-xl shadow-[0_10px_40px_rgba(0,0,0,0.1)] p-4 flex items-start gap-3 w-80";
+                iconContainer.innerHTML = `<svg class="w-5 h-5 text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"></path></svg>`;
+                iconContainer.className = "rounded-full bg-green-50 p-1 mt-0.5 flex-shrink-0";
+            } else if (type === 'error') {
+                toast.className = "fixed top-5 right-5 z-[200] transform transition-all duration-500 translate-x-0 opacity-100 bg-white border-l-4 border-red-500 rounded-xl shadow-[0_10px_40px_rgba(0,0,0,0.1)] p-4 flex items-start gap-3 w-80";
+                iconContainer.innerHTML = `<svg class="w-5 h-5 text-red-500" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"></path></svg>`;
+                iconContainer.className = "rounded-full bg-red-50 p-1 mt-0.5 flex-shrink-0";
+            }
+
+            setTimeout(() => {
+                toast.classList.remove('translate-x-0', 'opacity-100');
+                toast.classList.add('translate-x-[150%]', 'opacity-0');
+            }, 3000);
+        }
+
+        // ================= การทำงานเบื้องต้น =================
+        document.addEventListener("DOMContentLoaded", function() {
+            const observerOptions = { root: null, rootMargin: '0px 0px -10% 0px', threshold: 0 };
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) { entry.target.classList.add('is-visible'); } 
+                    else { if (entry.boundingClientRect.top > 0) { entry.target.classList.remove('is-visible'); } }
+                });
+            }, observerOptions);
+
+            document.querySelectorAll('.reveal-item').forEach(el => observer.observe(el));
+
+            loadDynamicSiteSettings();
+            loadDynamicCategories();
+            
+            // อัปเดต UI เมื่อโหลดหน้าเว็บว่าล็อกอินหรือยัง
+            updateAuthUI();
+        });
+
+        // ================= ระบบจัดการ UI โปรไฟล์ =================
+        function updateAuthUI() {
+            const isLoggedIn = localStorage.getItem('isLoggedIn') === 'true';
+            const username = localStorage.getItem('username') || 'User';
+
+            const authBtns = document.getElementById('auth-buttons');
+            const userProfile = document.getElementById('user-profile-section');
+            const navTopup = document.getElementById('nav-topup');
+
+            if (isLoggedIn) {
+                if(authBtns) authBtns.classList.add('hidden'); 
+                
+                if(userProfile) {
+                    userProfile.classList.remove('hidden'); 
+                    userProfile.classList.add('flex');
+                }
+                if(navTopup) {
+                    navTopup.classList.remove('hidden'); 
+                    navTopup.classList.add('flex');
+                }
+
+                const ddName = document.getElementById('dd-username');
+                const ddSub = document.getElementById('dd-sub-username');
+                if(ddName) ddName.innerText = username;
+                if(ddSub) ddSub.innerText = '@' + username;
+            } else {
+                if(authBtns) {
+                    authBtns.classList.remove('hidden');
+                    authBtns.classList.add('flex');
+                }
+                if(userProfile) {
+                    userProfile.classList.add('hidden');
+                    userProfile.classList.remove('flex');
+                }
+                if(navTopup) {
+                    navTopup.classList.add('hidden');
+                    navTopup.classList.remove('flex');
+                }
+            }
+        }
+
+        // ================= เมนู Dropdown โปรไฟล์ =================
+        function toggleProfileDropdown(e) {
+            if(e) e.stopPropagation(); 
+            const dd = document.getElementById('profile-dropdown');
+            if(dd) dd.classList.toggle('hidden');
+        }
+
+        document.addEventListener('click', function(event) {
+            const profileBtn = document.getElementById('profile-btn');
+            const dropdown = document.getElementById('profile-dropdown');
+            if (profileBtn && dropdown && !profileBtn.contains(event.target) && !dropdown.contains(event.target)) {
+                dropdown.classList.add('hidden');
+            }
+        });
+
+        // ================= ระบบล็อคอิน & สมัคร =================
+        function handleLogin(e) {
+            e.preventDefault();
+            const user = document.getElementById('login-username').value;
+            
+            localStorage.setItem('isLoggedIn', 'true');
+            localStorage.setItem('username', user);
+
+            showToast('ສຳເລັດ!', 'ເຂົ້າສູ່ລະບົບສຳເລັດແລ້ວ!', 'success');
+            setTimeout(() => {
+                toggleModal('loginModal'); 
+                updateAuthUI(); 
+                document.getElementById('login-password').value = '';
+            }, 1000);
+        }
+
+        function handleRegister(e) {
+            e.preventDefault();
+            const user = document.getElementById('reg-username').value;
+            const pass = document.getElementById('reg-password').value;
+            const confirmPass = document.getElementById('reg-confirm-password').value;
+            
+            if(pass !== confirmPass) {
+                showToast('ຂໍ້ຜິດພາດ!', 'ລະຫັດຜ່ານບໍ່ກົງກັນ ກະລຸນາກວດສອບອີກຄັ້ງ.', 'error');
+                return;
+            }
+            
+            localStorage.setItem('isLoggedIn', 'true');
+            localStorage.setItem('username', user);
+
+            showToast('ສຳເລັດ!', 'ສະໝັກສະມາຊິກສຳເລັດແລ້ວ!', 'success');
+            setTimeout(() => {
+                document.getElementById('loginModal').classList.add('hidden'); 
+                updateAuthUI(); 
+                document.getElementById('real-register-form').reset();
+                checkPasswordStrength(); 
+            }, 1000);
+        }
+
+        function handleLogout() {
+            localStorage.removeItem('isLoggedIn');
+            localStorage.removeItem('username');
+            
+            document.getElementById('profile-dropdown').classList.add('hidden');
+            updateAuthUI(); 
+            showToast('ສຳເລັດ!', 'ອອກຈາກລະບົບຮຽບຮ້ອຍແລ້ວ.', 'success');
+        }
+
+        function handleForgotPassword(e) {
+            e.preventDefault();
+            showToast('ສຳເລັດ!', 'ລະບົບໄດ້ສົ່ງລິ້ງຣີເຊັດລະຫັດຜ່ານໄປຍັງອີເມວຂອງທ່ານແລ້ວ.', 'success');
+            setTimeout(() => {
+                switchModalForm('login'); 
+            }, 1500);
+        }
+
+
+        // --- Load Dynamic Settings ---
+        function loadDynamicSiteSettings() {
+            const settings = JSON.parse(localStorage.getItem('mySiteSettingsDB')) || {};
+            
+            if(settings.logo) {
+                const logoImg = `<img src="${settings.logo}" class="w-full h-full object-cover">`;
+                const navLogo = document.getElementById('site-logo-nav');
+                if(navLogo) navLogo.innerHTML = logoImg;
+                
+                const footerLogoPreview = document.getElementById('footer-logo-preview');
+                if(footerLogoPreview) footerLogoPreview.innerHTML = logoImg;
+                
+                const footerSmallLogoPreview = document.getElementById('footer-small-logo-preview');
+                if(footerSmallLogoPreview) footerSmallLogoPreview.innerHTML = logoImg;
+            }
+        }
+
+        function loadDynamicCategories() {
+            const catGrid = document.getElementById('dynamic-category-grid');
+            if(!catGrid) return;
+
+            const catsDB = JSON.parse(localStorage.getItem('myCategoriesDB')) || {};
+            const catKeys = Object.keys(catsDB);
+            
+            const productsDB = JSON.parse(localStorage.getItem('myProductsDB')) || {};
+            const categoryCounts = {};
+            Object.values(productsDB).forEach(p => {
+                categoryCounts[p.category] = (categoryCounts[p.category] || 0) + 1;
+            });
+
+            if(catKeys.length > 0) {
+                catGrid.innerHTML = '';
+                let count = 0;
+                
+                catKeys.forEach(id => {
+                    const cat = catsDB[id];
+                    count++;
+                    let delayClass = 'delay-' + ((count % 3 === 0 ? 3 : count % 3) * 100);
+                    const productCount = categoryCounts[cat.name] || 0;
+                    const catImage = cat.image || 'https://placehold.co/400x300/c084fc/ffffff?text=Category';
+
+                    catGrid.innerHTML += `
+                        <div class="reveal-item is-visible ${delayClass}" onclick="window.location.href='category-details.html?cat=${encodeURIComponent(cat.name)}'">
+                            <div class="bg-white rounded-xl border border-purple-100 shadow-[0_4px_16px_rgba(168,85,247,0.05)] hover:shadow-[0_8px_25px_rgba(168,85,247,0.15)] hover:border-purple-300 transition-all duration-300 group cursor-pointer flex flex-col h-full">
+                                
+                                <div class="p-1.5 pb-0">
+                                    <div class="w-full aspect-[3/1] md:aspect-[3.5/1] bg-purple-50 rounded-lg relative overflow-hidden flex items-center justify-center">
+                                        <img src="${catImage}" alt="${cat.name}" class="absolute inset-0 w-full h-full object-cover transition-all duration-500 group-hover:scale-105">
+                                        <div class="absolute inset-0 bg-white/0 group-hover:bg-white/70 transition-all duration-300 z-0"></div>
+                                        <div class="relative z-10 bg-[#f3e8ff]/90 border border-[#c084fc] text-[#9333ea] px-6 py-1.5 rounded-full text-[13px] font-bold shadow-sm opacity-0 scale-95 group-hover:opacity-100 group-hover:scale-100 transition-all duration-300">
+                                            ເບິ່ງລາຍລະອຽດ
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <div class="px-3 py-3 flex justify-between items-end bg-white rounded-b-xl flex-grow">
+                                    <div>
+                                        <h5 class="text-sm md:text-[15px] font-bold text-purple-600 mb-0.5 uppercase">${cat.name}</h5>
+                                        <p class="text-[11px] md:text-[12px] text-gray-500 font-medium">0 ໝວດໝູ່ &nbsp; ${productCount} ສິນຄ້າ</p>
+                                    </div>
+                                    <div class="text-[11px] md:text-[12px] font-semibold text-purple-400 group-hover:text-purple-600 transition-colors">
+                                        ບໍ່ຊາບລາຄາ
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+                    `;
+                });
+            } else {
+                catGrid.innerHTML = `<p class="text-center text-gray-500 w-full col-span-2 py-8">ຍັງບໍ່ມີໝວດໝູ່...</p>`;
+            }
+        }
+
+        function toggleModal(modalId) {
+            const modal = document.getElementById('loginModal'); 
+            if (modal.classList.contains('hidden')) {
+                if (modalId === 'registerModal') switchModalForm('register', false);
+                else switchModalForm('login', false);
+            }
+            modal.classList.toggle('hidden');
+        }
+
+        // ================= 3 STATES MODAL =================
+        function switchModalForm(type, animate = true) {
+            const loginSec = document.getElementById('login-section');
+            const registerSec = document.getElementById('register-section');
+            const forgotSec = document.getElementById('forgot-section');
+            
+            loginSec.classList.add('hidden');
+            registerSec.classList.add('hidden');
+            if(forgotSec) forgotSec.classList.add('hidden');
+
+            let activeSec = loginSec;
+            if (type === 'register') activeSec = registerSec;
+            else if (type === 'forgot') activeSec = forgotSec;
+            
+            activeSec.classList.remove('hidden');
+
+            if(animate) {
+                activeSec.style.opacity = '0';
+                activeSec.style.transform = 'translateY(15px)';
+                setTimeout(() => {
+                    activeSec.style.transition = 'all 0.4s cubic-bezier(0.22, 1, 0.36, 1)';
+                    activeSec.style.opacity = '1';
+                    activeSec.style.transform = 'translateY(0)';
+                }, 50);
+            }
+        }
+
+        // ================= LOGIC กดตาดูรหัส =================
+        function togglePassword(inputId, iconId) {
+            const input = document.getElementById(inputId);
+            const icon = document.getElementById(iconId);
+            
+            if (input.type === 'password') {
+                input.type = 'text';
+                icon.innerHTML = '<path stroke-linecap="round" stroke-linejoin="round" d="M3.98 8.223A10.477 10.477 0 001.934 12C3.226 16.338 7.244 19.5 12 19.5c.993 0 1.953-.138 2.863-.395M6.228 6.228A10.45 10.45 0 0112 4.5c4.756 0 8.773 3.162 10.065 7.498a10.523 10.523 0 01-4.293 5.774M6.228 6.228L3 3m3.228 3.228l3.65 3.65m7.894 7.894L21 21m-3.228-3.228l-3.65-3.65m0 0a3 3 0 10-4.243-4.243m4.242 4.242L9.88 9.88" />';
+            } else {
+                input.type = 'password';
+                icon.innerHTML = '<path stroke-linecap="round" stroke-linejoin="round" d="M2.036 12.322a1.012 1.012 0 010-.639C3.423 7.51 7.36 4.5 12 4.5c4.638 0 8.573 3.007 9.963 7.178.07.207.07.431 0 .639C20.577 16.49 16.64 19.5 12 19.5c-4.638 0-8.573-3.007-9.963-7.178z" /><path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />';
+            }
+        }
+
+        // ================= LOGIC วัดความยากรหัส =================
+        function checkPasswordStrength() {
+            const val = document.getElementById('reg-password').value;
+            const bar = document.getElementById('strength-bar');
+            const txt = document.getElementById('strength-text');
+            
+            let strength = 0;
+            if(val.length >= 6) strength++;
+            if(val.match(/[a-z]/) && val.match(/[A-Z]/)) strength++;
+            if(val.match(/\d/)) strength++;
+            if(val.match(/[^a-zA-Z\d]/)) strength++;
+
+            if (val.length === 0) {
+                bar.style.width = '0%';
+                txt.innerText = 'ອ່ອນແອ';
+                txt.className = 'text-[10px] font-bold text-red-500';
+                bar.className = 'bg-red-500 h-1.5 rounded-full transition-all duration-300';
+            } else if (strength <= 1) {
+                bar.style.width = '33%';
+                txt.innerText = 'ອ່ອນແອ';
+                txt.className = 'text-[10px] font-bold text-red-500';
+                bar.className = 'bg-red-500 h-1.5 rounded-full transition-all duration-300';
+            } else if (strength === 2 || strength === 3) {
+                bar.style.width = '66%';
+                txt.innerText = 'ປານກາງ';
+                txt.className = 'text-[10px] font-bold text-yellow-500';
+                bar.className = 'bg-yellow-500 h-1.5 rounded-full transition-all duration-300';
+            } else {
+                bar.style.width = '100%';
+                txt.innerText = 'ປອດໄພສູງ';
+                txt.className = 'text-[10px] font-bold text-green-500';
+                bar.className = 'bg-green-500 h-1.5 rounded-full transition-all duration-300';
+            }
+        }
+
+        window.addEventListener('load', function() {
+            const preloader = document.getElementById('preloader');
+            if (preloader) {
+                preloader.style.opacity = '0';
+                setTimeout(() => { preloader.style.display = 'none'; }, 600);
+            }
+        });
+
+        let secretClickCount = 0;
+        let secretClickTimer;
+        const secretLogo = document.getElementById('site-logo-nav');
+        if(secretLogo) {
+            secretLogo.addEventListener('click', function(e) {
+                e.preventDefault();
+                secretClickCount++;
+                clearTimeout(secretClickTimer);
+                secretClickTimer = setTimeout(() => { secretClickCount = 0; }, 1500); 
+
+                if (secretClickCount === 5) {
+                    let password = prompt("🔒 ລະຫັດຜ່ານລັບສຳລັບ Admin:");
+                    if (password === "9999") { 
+                        window.location.href = "admin-dashboard.html";
+                    } else if (password !== null && password !== "") {
+                        alert("❌ ລະຫັດຜ່ານບໍ່ຖືກຕ້ອງ!");
+                    }
+                    secretClickCount = 0;
+                }
+            });
+        }
+    </script>
+</body>
+</html>

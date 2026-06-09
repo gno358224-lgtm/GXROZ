@@ -1,0 +1,1165 @@
+<!DOCTYPE html>
+<html lang="lo">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard - HolaEZ Shop</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Lao:wght@300;400;500;600;700&family=Kanit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body { font-family: 'Noto Sans Lao', 'Kanit', sans-serif; background-color: #f4f7fb; }
+        .tab-content { display: none; }
+        .tab-content.active { display: block; animation: fadeIn 0.4s cubic-bezier(0.16, 1, 0.3, 1); }
+        @keyframes fadeIn { 
+            from { opacity: 0; transform: translateY(15px); } 
+            to { opacity: 1; transform: translateY(0); } 
+        }
+        
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar { width: 6px; height: 6px; }
+        ::-webkit-scrollbar-track { background: transparent; }
+        ::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 10px; }
+        ::-webkit-scrollbar-thumb:hover { background: #94a3b8; }
+
+        /* Custom File Input Styles */
+        input[type="file"]::file-selector-button {
+            margin-right: 1rem;
+            padding: 0.5rem 1.25rem;
+            border-radius: 0.75rem;
+            border: 1px solid #bfdbfe;
+            background: linear-gradient(to right, #eff6ff, #dbeafe);
+            color: #2563eb;
+            font-weight: 700;
+            font-size: 0.875rem;
+            cursor: pointer;
+            transition: all 0.2s ease-in-out;
+            box-shadow: 0 2px 4px rgba(37, 99, 235, 0.05);
+        }
+        input[type="file"]::file-selector-button:hover {
+            background: #bfdbfe;
+            color: #1d4ed8;
+            box-shadow: 0 4px 6px rgba(37, 99, 235, 0.1);
+        }
+
+        /* Glassmorphism Effect */
+        .glass-header {
+            background: rgba(255, 255, 255, 0.85);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+        }
+    </style>
+</head>
+<body class="text-gray-800 flex h-screen overflow-hidden selection:bg-blue-100 selection:text-blue-900 relative">
+
+    <aside class="w-[260px] bg-white border-r border-gray-100 flex flex-col hidden md:flex z-20 shadow-[4px_0_24px_rgba(0,0,0,0.02)] relative">
+        <div class="h-[76px] flex items-center px-6 border-b border-gray-50 bg-white sticky top-0">
+            <div id="sidebar-logo-preview" class="w-9 h-9 bg-gradient-to-br from-blue-500 to-blue-700 rounded-xl flex items-center justify-center text-white font-black text-[10px] mr-3 shadow-lg shadow-blue-500/30 overflow-hidden ring-2 ring-blue-50 ring-offset-1">
+                HL
+            </div>
+            <h1 class="text-[19px] font-black text-gray-800 tracking-tight">Admin<span class="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-indigo-600">Panel</span></h1>
+        </div>
+        
+        <nav class="flex-1 px-4 py-6 space-y-1 overflow-y-auto">
+            
+            <a href="index.html" class="w-full flex items-center gap-3 px-4 py-3.5 bg-gray-900 text-white hover:bg-gray-800 font-bold rounded-2xl transition-all duration-300 shadow-[0_8px_20px_rgba(0,0,0,0.12)] hover:shadow-[0_10px_25px_rgba(0,0,0,0.2)] hover:-translate-y-0.5 mb-8 group">
+                <div class="bg-white/20 p-1.5 rounded-lg group-hover:scale-110 transition-transform">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor" class="w-4 h-4"><path stroke-linecap="round" stroke-linejoin="round" d="M2.25 12l8.954-8.955c.44-.439 1.152-.439 1.591 0L21.75 12M4.5 9.75v10.125c0 .621.504 1.125 1.125 1.125H9.75v-4.875c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125V21h4.125c.621 0 1.125-.504 1.125-1.125V9.75M8.25 21h8.25" /></svg>
+                </div>
+                ກັບໜ້າຫຼັກ (Home)
+            </a>
+
+            <p class="text-[10px] font-bold text-gray-400 uppercase tracking-widest mb-3 ml-3 mt-4">ຈັດການຂໍ້ມູນຫຼັກ</p>
+            
+            <button onclick="switchTab('products')" id="tab-btn-products" class="w-full flex items-center gap-3 px-4 py-3 bg-gradient-to-r from-blue-50 to-white text-blue-700 font-bold rounded-xl transition-all duration-300 border-l-4 border-blue-600 shadow-sm relative overflow-hidden">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.2" stroke="currentColor" class="w-5 h-5"><path stroke-linecap="round" stroke-linejoin="round" d="M20.25 7.5l-.625 10.632a2.25 2.25 0 01-2.247 2.118H6.622a2.25 2.25 0 01-2.247-2.118L3.75 7.5M10 11.25h4M3.375 7.5h17.25c.621 0 1.125-.504 1.125-1.125v-1.5c0-.621-.504-1.125-1.125-1.125H3.375c-.621 0-1.125.504-1.125 1.125v1.5c0 .621.504 1.125 1.125 1.125z" /></svg>
+                ສິນຄ້າ (Products)
+            </button>
+
+            <button onclick="switchTab('categories')" id="tab-btn-categories" class="w-full flex items-center gap-3 px-4 py-3 border-l-4 border-transparent text-gray-500 hover:bg-gray-50 hover:text-gray-800 font-medium rounded-xl transition-all duration-300">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-5 h-5"><path stroke-linecap="round" stroke-linejoin="round" d="M3.75 6A2.25 2.25 0 016 3.75h2.25A2.25 2.25 0 0110.5 6v2.25a2.25 2.25 0 01-2.25 2.25H6a2.25 2.25 0 01-2.25-2.25V6zM3.75 15.75A2.25 2.25 0 016 13.5h2.25a2.25 2.25 0 012.25 2.25V18a2.25 2.25 0 01-2.25 2.25H6A2.25 2.25 0 013.75 18v-2.25zM13.5 6a2.25 2.25 0 012.25-2.25H18A2.25 2.25 0 0120.25 6v2.25A2.25 2.25 0 0118 10.5h-2.25a2.25 2.25 0 01-2.25-2.25V6zM13.5 15.75a2.25 2.25 0 012.25-2.25H18a2.25 2.25 0 0120.25 2.25V18A2.25 2.25 0 0118 20.25h-2.25A2.25 2.25 0 0113.5 18v-2.25z" /></svg>
+                ໝວດໝູ່ (Categories)
+            </button>
+
+            <button onclick="switchTab('users')" id="tab-btn-users" class="w-full flex items-center gap-3 px-4 py-3 border-l-4 border-transparent text-gray-500 hover:bg-gray-50 hover:text-gray-800 font-medium rounded-xl transition-all duration-300">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-5 h-5"><path stroke-linecap="round" stroke-linejoin="round" d="M15 19.128a9.38 9.38 0 002.625.372 9.337 9.337 0 004.121-.952 4.125 4.125 0 00-7.533-2.493M15 19.128v-.003c0-1.113-.285-2.16-.786-3.07M15 19.128v.106A12.318 12.318 0 018.624 21c-2.331 0-4.512-.645-6.374-1.766l-.001-.109a6.375 6.375 0 0111.964-3.07M12 6.375a3.375 3.375 0 11-6.75 0 3.375 3.375 0 016.75 0zm8.25 2.25a2.625 2.625 0 11-5.25 0 2.625 2.625 0 015.25 0z" /></svg>
+                ຜູ້ໃຊ້ (Users)
+            </button>
+
+            <p class="text-[10px] font-bold text-gray-400 uppercase tracking-widest mb-3 mt-8 ml-3">ຕັ້ງຄ່າລະບົບ</p>
+            
+            <button onclick="switchTab('settings')" id="tab-btn-settings" class="w-full flex items-center gap-3 px-4 py-3 border-l-4 border-transparent text-gray-500 hover:bg-gray-50 hover:text-gray-800 font-medium rounded-xl transition-all duration-300">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-5 h-5"><path stroke-linecap="round" stroke-linejoin="round" d="M2.25 15.75l5.159-5.159a2.25 2.25 0 013.182 0l5.159 5.159m-1.5-1.5l1.409-1.409a2.25 2.25 0 013.182 0l2.909 2.909m-18 3.75h16.5a1.5 1.5 0 001.5-1.5V6a1.5 1.5 0 00-1.5-1.5H3.75A1.5 1.5 0 002.25 6v12a1.5 1.5 0 001.5 1.5zm10.5-11.25h.008v.008h-.008V8.25zm.375 0a.375.375 0 11-.75 0 .375.375 0 01.75 0z" /></svg>
+                ໂລໂກ້ & ແບນເນີ
+            </button>
+
+            <button onclick="switchTab('theme')" id="tab-btn-theme" class="w-full flex items-center gap-3 px-4 py-3 border-l-4 border-transparent text-gray-500 hover:bg-gray-50 hover:text-gray-800 font-medium rounded-xl transition-all duration-300">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-5 h-5"><path stroke-linecap="round" stroke-linejoin="round" d="M9.53 16.122a3 3 0 00-5.78 1.128 2.25 2.25 0 01-2.4 2.245 4.5 4.5 0 008.4-2.245c0-.399-.078-.78-.22-1.128zm0 0a15.998 15.998 0 003.388-1.62m-5.043-.025a15.994 15.994 0 011.622-3.395m3.42 3.42a15.995 15.995 0 004.764-4.648l3.813-1.646m-7.142 8.65a15.999 15.999 0 004.744-4.654l1.646-3.813" /></svg>
+                ທີມ & ຊຳລະເງິນ
+            </button>
+        </nav>
+        <div class="p-5 border-t border-gray-100 bg-white">
+            <button class="w-full flex items-center justify-center gap-2 px-4 py-3 bg-red-50 text-red-500 hover:bg-red-500 hover:text-white font-bold rounded-xl transition-all duration-300 group">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor" class="w-5 h-5 group-hover:-translate-x-1 transition-transform"><path stroke-linecap="round" stroke-linejoin="round" d="M15.75 9V5.25A2.25 2.25 0 0013.5 3h-6a2.25 2.25 0 00-2.25 2.25v13.5A2.25 2.25 0 007.5 21h6a2.25 2.25 0 002.25-2.25V15M12 9l-3 3m0 0l3 3m-3-3h12.75" /></svg>
+                ອອກຈາກລະບົບ
+            </button>
+        </div>
+    </aside>
+
+    <main class="flex-1 flex flex-col h-screen overflow-hidden relative">
+        
+        <header class="h-[76px] glass-header border-b border-gray-200/60 flex items-center justify-between px-6 md:px-8 z-10 sticky top-0">
+            <div class="flex items-center gap-4">
+                <button class="md:hidden text-gray-500 hover:text-blue-600 transition-colors bg-gray-50 p-2 rounded-lg">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor" class="w-6 h-6"><path stroke-linecap="round" stroke-linejoin="round" d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5" /></svg>
+                </button>
+                <div>
+                    <h2 class="text-2xl font-black text-gray-800 tracking-tight leading-none" id="page-title">ຈັດການສິນຄ້າ</h2>
+                    <p class="text-xs text-gray-500 font-medium hidden sm:block mt-1" id="page-subtitle">ຄຸ້ມຄອງລາຍການສິນຄ້າທັງໝົດໃນຮ້ານ</p>
+                </div>
+            </div>
+            <div class="flex items-center gap-4">
+                <a href="index.html" class="flex items-center gap-2 text-sm font-bold text-blue-600 bg-blue-50 px-3 py-2 rounded-xl hover:bg-blue-100 transition-colors md:hidden shadow-sm border border-blue-100">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor" class="w-5 h-5"><path stroke-linecap="round" stroke-linejoin="round" d="M2.25 12l8.954-8.955c.44-.439 1.152-.439 1.591 0L21.75 12M4.5 9.75v10.125c0 .621.504 1.125 1.125 1.125H9.75v-4.875c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125V21h4.125c.621 0 1.125-.504 1.125-1.125V9.75M8.25 21h8.25" /></svg>
+                </a>
+                <div class="hidden sm:flex flex-col items-end mr-2">
+                    <span class="text-sm font-bold text-gray-800 leading-none">Admin</span>
+                    <span class="text-[11px] font-medium text-emerald-500 mt-1 flex items-center gap-1">
+                        <span class="w-1.5 h-1.5 rounded-full bg-emerald-500 inline-block animate-pulse"></span> ອອນລາຍ
+                    </span>
+                </div>
+                <div class="w-11 h-11 rounded-2xl bg-gradient-to-br from-blue-100 to-indigo-50 flex items-center justify-center border-2 border-white shadow-md cursor-pointer hover:ring-2 ring-offset-2 ring-blue-400 transition-all group">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-6 h-6 text-blue-600 group-hover:scale-110 transition-transform"><path stroke-linecap="round" stroke-linejoin="round" d="M15.75 6a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0zM4.501 20.118a7.5 7.5 0 0114.998 0A17.933 17.933 0 0112 21.75c-2.676 0-5.216-.584-7.499-1.632z" /></svg>
+                </div>
+            </div>
+        </header>
+
+        <div class="flex-1 overflow-y-auto p-4 md:p-8 pb-20">
+
+            <div id="tab-products" class="tab-content active max-w-7xl mx-auto">
+                <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-6 bg-white p-4 rounded-2xl shadow-sm border border-gray-100">
+                    <div class="relative w-full sm:max-w-md">
+                        <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor" class="w-5 h-5 text-gray-400"><path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.602 10.602z" /></svg>
+                        </div>
+                        <input type="text" placeholder="ຄົ້ນຫາຊື່ສິນຄ້າ, ໝວດໝູ່..." class="w-full pl-12 pr-4 py-3 bg-gray-50 border border-gray-200 rounded-xl text-sm focus:outline-none focus:ring-4 focus:ring-blue-500/10 focus:border-blue-500 focus:bg-white transition-all">
+                    </div>
+                    
+                    <div class="flex items-center gap-2 w-full sm:w-auto">
+                        <button onclick="resetMenuData('products')" class="px-4 py-3 text-sm font-bold text-red-500 bg-red-50 hover:bg-red-500 hover:text-white rounded-xl transition-all shadow-sm border border-red-100 flex items-center gap-2">
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor" class="w-4 h-4"><path stroke-linecap="round" stroke-linejoin="round" d="M16.023 9.348h4.992v-.001M2.985 19.644v-4.992m0 0h4.992m-4.993 0l3.181 3.183a8.25 8.25 0 0013.803-3.7M4.031 9.865a8.25 8.25 0 0113.803-3.7l3.181 3.182m0-4.991v4.99" /></svg>
+                            <span class="hidden sm:inline">ລ້າງຂໍ້ມູນ</span>
+                        </button>
+                        
+                        <button onclick="openModal('productModal')" class="flex-1 sm:flex-none bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white font-bold py-3 px-6 rounded-xl shadow-[0_8px_20px_rgba(37,99,235,0.25)] hover:shadow-[0_10px_25px_rgba(37,99,235,0.35)] transition-all flex items-center justify-center gap-2 transform hover:-translate-y-0.5 active:translate-y-0">
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="3" stroke="currentColor" class="w-5 h-5"><path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15" /></svg>
+                            ເພີ່ມການ໌ດສິນຄ້າ
+                        </button>
+                    </div>
+                </div>
+
+                <div class="bg-white border border-gray-100 rounded-[24px] shadow-sm overflow-hidden relative">
+                    <div class="overflow-x-auto">
+                        <table class="w-full text-left border-collapse whitespace-nowrap">
+                            <thead>
+                                <tr class="bg-slate-50 border-b border-gray-100 text-[12px] text-gray-500 uppercase tracking-widest font-bold">
+                                    <th class="p-5 pl-6 w-24">ຮູບພາບ</th>
+                                    <th class="p-5">ຊື່ສິນຄ້າ</th>
+                                    <th class="p-5">ໝວດໝູ່</th>
+                                    <th class="p-5">ລາຄາ</th>
+                                    <th class="p-5">ສະຕັອກ</th>
+                                    <th class="p-5 text-center pr-6 w-28">ຈັດການ</th>
+                                </tr>
+                            </thead>
+                            <tbody class="divide-y divide-gray-50 text-sm" id="productList">
+                                </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <div id="tab-categories" class="tab-content max-w-7xl mx-auto">
+                <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-6 bg-white p-4 rounded-2xl shadow-sm border border-gray-100">
+                    <div>
+                        <h3 class="text-xl font-black text-gray-800 tracking-tight">ໝວດໝູ່ສິນຄ້າ</h3>
+                        <p class="text-xs text-gray-500 mt-1">ຈັດການໝວດໝູ່ເພື່ອໃຫ້ລູກຄ້າຄົ້ນຫາສິນຄ້າໄດ້ງ່າຍຂຶ້ນ</p>
+                    </div>
+                    <div class="flex items-center gap-2 w-full sm:w-auto">
+                        <button onclick="resetMenuData('categories')" class="px-4 py-3 text-sm font-bold text-red-500 bg-red-50 hover:bg-red-500 hover:text-white rounded-xl transition-all shadow-sm border border-red-100 flex items-center gap-2">
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor" class="w-4 h-4"><path stroke-linecap="round" stroke-linejoin="round" d="M16.023 9.348h4.992v-.001M2.985 19.644v-4.992m0 0h4.992m-4.993 0l3.181 3.183a8.25 8.25 0 0013.803-3.7M4.031 9.865a8.25 8.25 0 0113.803-3.7l3.181 3.182m0-4.991v4.99" /></svg>
+                            <span class="hidden sm:inline">ລ້າງຂໍ້ມູນ</span>
+                        </button>
+                        
+                        <button onclick="openModal('categoryModal')" class="flex-1 sm:flex-none bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white font-bold py-3 px-6 rounded-xl shadow-[0_8px_20px_rgba(37,99,235,0.25)] hover:shadow-[0_10px_25px_rgba(37,99,235,0.35)] transition-all flex items-center justify-center gap-2 transform hover:-translate-y-0.5 active:translate-y-0">
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="3" stroke="currentColor" class="w-5 h-5"><path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15" /></svg>
+                            ເພີ່ມໝວດໝູ່
+                        </button>
+                    </div>
+                </div>
+                
+                <div class="bg-white border border-gray-100 rounded-[24px] shadow-sm overflow-hidden">
+                    <div class="overflow-x-auto">
+                        <table class="w-full text-left border-collapse whitespace-nowrap">
+                            <thead>
+                                <tr class="bg-slate-50 border-b border-gray-100 text-[12px] text-gray-500 uppercase tracking-widest font-bold">
+                                    <th class="p-5 pl-6 w-16">#</th>
+                                    <th class="p-5 w-32">ຮູບພາບ</th>
+                                    <th class="p-5">ຊື່ໝວດໝູ່</th>
+                                    <th class="p-5 text-center pr-6 w-28">ຈັດການ</th>
+                                </tr>
+                            </thead>
+                            <tbody class="divide-y divide-gray-50 text-sm" id="categoryList">
+                                </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <div id="tab-users" class="tab-content max-w-7xl mx-auto">
+                <div class="mb-6 bg-white p-6 rounded-2xl shadow-sm border border-gray-100 flex flex-col md:flex-row md:items-center justify-between gap-4">
+                    <div>
+                        <h2 class="text-2xl font-black text-gray-800 tracking-tight">ຈັດການຂໍ້ມູນຜູ້ໃຊ້</h2>
+                        <p class="text-sm text-gray-500 mt-1">ຈັດການຍົດ (Admin/Customer), ເຕີມເງິນ, ແລະ ແບນລູກຄ້າ</p>
+                    </div>
+                    <div class="flex flex-col sm:flex-row items-center gap-3 w-full md:w-auto">
+                        <button onclick="resetMenuData('users')" class="w-full sm:w-auto px-4 py-2.5 text-sm font-bold text-red-500 bg-red-50 hover:bg-red-500 hover:text-white rounded-xl transition-all shadow-sm border border-red-100 flex items-center justify-center gap-2">
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor" class="w-4 h-4"><path stroke-linecap="round" stroke-linejoin="round" d="M16.023 9.348h4.992v-.001M2.985 19.644v-4.992m0 0h4.992m-4.993 0l3.181 3.183a8.25 8.25 0 0013.803-3.7M4.031 9.865a8.25 8.25 0 0113.803-3.7l3.181 3.182m0-4.991v4.99" /></svg>
+                            ລ້າງຂໍ້ມູນຜູ້ໃຊ້
+                        </button>
+                        
+                        <div class="relative w-full sm:max-w-xs">
+                            <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
+                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor" class="w-5 h-5 text-gray-400"><path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.602 10.602z" /></svg>
+                            </div>
+                            <input type="text" placeholder="ຄົ້ນຫາຊື່ຜູ້ໃຊ້..." class="w-full pl-12 pr-4 py-2 bg-gray-50 border border-gray-200 rounded-xl text-sm focus:outline-none focus:ring-4 focus:ring-blue-500/10 focus:border-blue-500 focus:bg-white transition-all">
+                        </div>
+                    </div>
+                </div>
+
+                <div class="bg-white border border-gray-100 rounded-[24px] shadow-sm overflow-hidden">
+                    <div class="overflow-x-auto">
+                        <table class="w-full text-left border-collapse whitespace-nowrap">
+                            <thead>
+                                <tr class="bg-slate-50 border-b border-gray-100 text-[12px] text-gray-500 uppercase tracking-widest font-bold">
+                                    <th class="p-5 pl-6 w-16">ID</th>
+                                    <th class="p-5">ຊື່ຜູ້ໃຊ້ (Username)</th>
+                                    <th class="p-5">ຍົດ (Role)</th>
+                                    <th class="p-5">ຍອດເງິນຄົງເຫຼືອ</th>
+                                    <th class="p-5">ສະຖານະ</th>
+                                    <th class="p-5 text-center pr-6 w-36">ຈັດການ</th>
+                                </tr>
+                            </thead>
+                            <tbody class="divide-y divide-gray-50 text-sm" id="userList">
+                                </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <div id="tab-settings" class="tab-content max-w-7xl mx-auto">
+                <div class="mb-6 bg-white p-6 rounded-2xl shadow-sm border border-gray-100 flex justify-between items-center">
+                    <div>
+                        <h2 class="text-2xl font-black text-gray-800 tracking-tight">ຕັ້ງຄ່າໂລໂກ້ & ປ້າຍແບນເນີ</h2>
+                        <p class="text-sm text-gray-500 mt-1">ປັບແຕ່ງຮູບໂລໂກ້, ປ້າຍໂຄສະນາ, ແລະ ຊ່ອງທາງຕິດຕໍ່</p>
+                    </div>
+                    <button onclick="resetMenuData('settings')" class="px-4 py-2 text-sm font-bold text-red-500 bg-red-50 hover:bg-red-500 hover:text-white rounded-xl transition-all shadow-sm border border-red-100 flex items-center gap-2">
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor" class="w-4 h-4"><path stroke-linecap="round" stroke-linejoin="round" d="M16.023 9.348h4.992v-.001M2.985 19.644v-4.992m0 0h4.992m-4.993 0l3.181 3.183a8.25 8.25 0 0013.803-3.7M4.031 9.865a8.25 8.25 0 0113.803-3.7l3.181 3.182m0-4.991v4.99" /></svg>
+                        <span class="hidden sm:inline">ລ້າງການຕັ້ງຄ່າ</span>
+                    </button>
+                </div>
+
+                <div class="grid grid-cols-1 xl:grid-cols-3 gap-6 xl:gap-8">
+                    <div class="xl:col-span-1">
+                        <div class="bg-white border border-gray-100 rounded-[24px] shadow-sm p-6 lg:p-8 hover:shadow-md transition-shadow relative overflow-hidden h-full">
+                            <div class="absolute top-0 right-0 w-40 h-40 bg-gradient-to-bl from-blue-50 to-transparent rounded-bl-full -z-10"></div>
+                            
+                            <div class="flex items-center gap-4 mb-8">
+                                <div class="w-12 h-12 rounded-xl bg-blue-50 text-blue-600 flex items-center justify-center shadow-inner">
+                                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-6 h-6"><path stroke-linecap="round" stroke-linejoin="round" d="M15 9h3.75M15 12h3.75M15 15h3.75M4.5 19.5h15a2.25 2.25 0 002.25-2.25V6.75A2.25 2.25 0 0019.5 4.5h-15a2.25 2.25 0 00-2.25 2.25v10.5A2.25 2.25 0 004.5 19.5zm6-10.125a1.875 1.875 0 11-3.75 0 1.875 1.875 0 013.75 0zm1.294 6.336a6.721 6.721 0 01-3.17.789 6.721 6.721 0 01-3.168-.789 3.376 3.376 0 016.338 0z" /></svg>
+                                </div>
+                                <div>
+                                    <h3 class="text-lg font-black text-gray-800">1. ໂລໂກ້ຮ້ານ</h3>
+                                    <p class="text-[13px] text-gray-500 font-medium">ແນະນຳຂະໜາດ 500x500px</p>
+                                </div>
+                            </div>
+                            
+                            <div class="flex flex-col items-center justify-center gap-6">
+                                <div class="w-36 h-36 rounded-full bg-slate-50 border-4 border-white outline outline-1 outline-gray-200 shadow-md flex items-center justify-center overflow-hidden">
+                                    <img id="previewLogo" src="https://placehold.co/500x500/f8fafc/94a3b8?text=LOGO" alt="Logo Preview" class="w-full h-full object-cover">
+                                </div>
+                                <div class="w-full relative">
+                                    <input type="file" id="inputLogo" accept="image/*" class="block w-full text-sm text-gray-500 border border-gray-200 rounded-xl p-2 bg-gray-50 hover:bg-white transition-colors cursor-pointer focus:outline-none focus:ring-4 focus:ring-blue-500/10 focus:border-blue-500">
+                                </div>
+                                <button onclick="saveSettingsLogo()" id="btnSaveLogo" class="w-full bg-gray-900 text-white font-bold px-6 py-3.5 rounded-xl hover:bg-black transition-colors shadow-lg active:scale-[0.98]">
+                                    ບັນທຶກໂລໂກ້
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="xl:col-span-2 space-y-6">
+                        <div class="bg-white border border-gray-100 rounded-[24px] shadow-sm p-6 lg:p-8 hover:shadow-md transition-shadow relative overflow-hidden">
+                            <div class="absolute top-0 right-0 w-64 h-64 bg-gradient-to-bl from-indigo-50/50 to-transparent rounded-bl-full -z-10"></div>
+                            
+                            <div class="flex items-center gap-4 mb-8">
+                                <div class="w-12 h-12 rounded-xl bg-indigo-50 text-indigo-600 flex items-center justify-center shadow-inner">
+                                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-6 h-6"><path stroke-linecap="round" stroke-linejoin="round" d="M2.25 15.75l5.159-5.159a2.25 2.25 0 013.182 0l5.159 5.159m-1.5-1.5l1.409-1.409a2.25 2.25 0 013.182 0l2.909 2.909m-18 3.75h16.5a1.5 1.5 0 001.5-1.5V6a1.5 1.5 0 00-1.5-1.5H3.75A1.5 1.5 0 002.25 6v12a1.5 1.5 0 001.5 1.5zm10.5-11.25h.008v.008h-.008V8.25zm.375 0a.375.375 0 11-.75 0 .375.375 0 01.75 0z" /></svg>
+                                </div>
+                                <div>
+                                    <h3 class="text-lg font-black text-gray-800">2. ປ້າຍແບນເນີ & ຊ່ອງທາງຕິດຕໍ່</h3>
+                                    <p class="text-[13px] text-gray-500 font-medium">ເພີ່ມປ້າຍໂຄສະນາໄດ້ຫຼາຍຮູບ (ສະແດງເປັນສະໄລ້ໃນໜ້າຫຼັກ)</p>
+                                </div>
+                            </div>
+                            
+                            <div class="space-y-6">
+                                <div id="banners-container" class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                    </div>
+
+                                <div class="bg-slate-50 border border-dashed border-gray-300 rounded-[16px] p-6 text-center">
+                                    <label class="block text-sm font-bold text-gray-700 mb-2">ອັບໂຫຼດປ້າຍແບນເນີໃໝ່ (ແນະນຳ 1200x400px)</label>
+                                    <div class="relative max-w-sm mx-auto">
+                                        <input type="file" id="inputNewBanner" accept="image/*" class="block w-full text-sm text-gray-500 border border-gray-200 rounded-xl p-2 bg-white hover:bg-blue-50 transition-colors cursor-pointer focus:outline-none focus:ring-4 focus:ring-blue-500/10 focus:border-blue-500">
+                                    </div>
+                                    <p class="text-xs text-gray-400 mt-2">ສາມາດອັບໂຫຼດເພີ່ມໄດ້ເລື້ອຍໆ</p>
+                                </div>
+
+                                <div class="border-t border-dashed border-gray-200 pt-5 mt-5">
+                                    <h4 class="text-sm font-black text-gray-800 mb-4 flex items-center gap-2 text-green-600">
+                                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-5 h-5"><path stroke-linecap="round" stroke-linejoin="round" d="M13.19 8.688a4.5 4.5 0 011.242 7.244l-4.5 4.5a4.5 4.5 0 01-6.364-6.364l1.757-1.757m13.35-.622l1.757-1.757a4.5 4.5 0 00-6.364-6.364l-4.5 4.5a4.5 4.5 0 001.242 7.244" /></svg>
+                                        ຊ່ອງທາງຕິດຕໍ່ (ຕັ້ງຄ່າເບີສັ່ງຊື້, Facebook, TikTok)
+                                    </h4>
+                                    <div class="space-y-4">
+                                        <div>
+                                            <label class="block text-xs font-bold text-green-600 mb-1.5 ml-1">ເບີ WhatsApp (ສຳລັບສັ່ງຊື້ສິນຄ້າ) <span class="text-red-500">*</span></label>
+                                            <input type="text" id="inputOrderWA" placeholder="ຕົວຢ່າງ: 85620xxxxxxxx" class="w-full px-4 py-3 bg-green-50/30 border border-green-200 rounded-xl text-sm focus:outline-none focus:ring-4 focus:ring-green-500/10 focus:border-green-500 transition-all shadow-sm">
+                                        </div>
+                                        
+                                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                            <div>
+                                                <label class="block text-xs font-bold text-blue-600 mb-1.5 ml-1">ລີ້ງ Facebook (ຕິດຕໍ່ຮ້ານ)</label>
+                                                <input type="text" id="inputContactFB" placeholder="ຕົວຢ່າງ: https://m.me/yourpage" class="w-full px-4 py-3 bg-white border border-gray-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 transition-all shadow-sm">
+                                            </div>
+                                            <div>
+                                                <label class="block text-xs font-bold text-gray-800 mb-1.5 ml-1">ລີ້ງ TikTok (ຕິດຕາມ)</label>
+                                                <input type="text" id="inputContactTikTok" placeholder="ຕົວຢ່າງ: https://tiktok.com/@yourprofile" class="w-full px-4 py-3 bg-white border border-gray-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-gray-800 transition-all shadow-sm">
+                                            </div>
+                                            <div class="md:col-span-2">
+                                                <label class="block text-xs font-bold text-green-500 mb-1.5 ml-1">ລີ້ງ WhatsApp (ຕິດຕໍ່ແອັດມິນທົ່ວໄປ)</label>
+                                                <input type="text" id="inputContactWA" placeholder="ຕົວຢ່າງ: https://wa.me/85620xxxxxxxx" class="w-full px-4 py-3 bg-white border border-gray-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-green-500 transition-all shadow-sm">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="flex justify-end pt-2">
+                                    <button onclick="saveSettingsBannerAndLinks()" id="btnSaveSettings" class="bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 text-white font-bold px-8 py-3.5 rounded-xl transition-all shadow-md active:scale-[0.98] flex items-center gap-2">
+                                        ບັນທຶກການຕັ້ງຄ່າ
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div id="tab-theme" class="tab-content max-w-7xl mx-auto">
+                <div class="mb-6 bg-white p-6 rounded-2xl shadow-sm border border-gray-100 flex justify-between items-center">
+                    <div>
+                        <h2 class="text-2xl font-black text-gray-800 tracking-tight">ຕັ້ງຄ່າທີມຮ້ານ & ຊຳລະເງິນ</h2>
+                        <p class="text-sm text-gray-500 mt-1">ປ່ຽນສີສັນໜ້າເວັບ, ຕັ້ງຄ່າ QR Code ແລະ ເລກບັນຊີຮັບເງິນ</p>
+                    </div>
+                    <button onclick="resetMenuData('theme')" class="px-4 py-2 text-sm font-bold text-red-500 bg-red-50 hover:bg-red-500 hover:text-white rounded-xl transition-all shadow-sm border border-red-100 flex items-center gap-2">
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor" class="w-4 h-4"><path stroke-linecap="round" stroke-linejoin="round" d="M16.023 9.348h4.992v-.001M2.985 19.644v-4.992m0 0h4.992m-4.993 0l3.181 3.183a8.25 8.25 0 0013.803-3.7M4.031 9.865a8.25 8.25 0 0113.803-3.7l3.181 3.182m0-4.991v4.99" /></svg>
+                        <span class="hidden sm:inline">ລ້າງການຕັ້ງຄ່າທີມ</span>
+                    </button>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div class="bg-white border border-gray-100 rounded-[24px] shadow-sm p-6 lg:p-8 hover:shadow-md transition-shadow relative overflow-hidden">
+                        <div class="flex items-center gap-4 mb-6">
+                            <div class="w-12 h-12 rounded-xl bg-green-50 text-green-600 flex items-center justify-center shadow-inner">
+                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-6 h-6"><path stroke-linecap="round" stroke-linejoin="round" d="M2.25 18.75a60.07 60.07 0 0115.797 2.101c.727.198 1.453-.342 1.453-1.096V18.75M3.75 4.5v.75A.75.75 0 013 6h-.75m0 0v-.375c0-.621.504-1.125 1.125-1.125H20.25M2.25 6v9m18-10.5v.75c0 .414.336.75.75.75h.75m-1.5-1.5h.375c.621 0 1.125.504 1.125 1.125v9.75c0 .621-.504 1.125-1.125 1.125h-.375m1.5-1.5H21a.75.75 0 00-.75.75v.75m0 0H3.75m0 0h-.375a1.125 1.125 0 01-1.125-1.125V15m1.5 1.5v-.75A.75.75 0 003 15h-.75M15 10.5a3 3 0 11-6 0 3 3 0 016 0zm3 0h.008v.008H18V10.5zm-12 0h.008v.008H6V10.5z" /></svg>
+                            </div>
+                            <div>
+                                <h3 class="text-lg font-black text-gray-800">ຊ່ອງທາງຊຳລະເງິນ (QR & ບັນຊີທະນາຄານ)</h3>
+                                <p class="text-[13px] text-gray-500 font-medium">ຕັ້ງຄ່າ QR ສຳລັບສະແກນໂອນ ແລະ ຂໍ້ມູນບັນຊີ</p>
+                            </div>
+                        </div>
+                        
+                        <div class="space-y-5">
+                            <div class="flex flex-col items-center justify-center gap-4 bg-gray-50 p-4 rounded-xl border border-dashed border-gray-300">
+                                <div class="w-40 h-40 bg-white border border-gray-200 shadow-sm flex items-center justify-center overflow-hidden rounded-xl">
+                                    <img id="previewQR" src="https://placehold.co/400x400/f8fafc/94a3b8?text=QR+Code" alt="QR Code Preview" class="w-full h-full object-contain">
+                                </div>
+                                <div class="w-full relative max-w-xs">
+                                    <input type="file" id="inputQR" accept="image/*" class="block w-full text-sm text-gray-500 border border-gray-200 rounded-xl p-2 bg-white hover:bg-gray-100 transition-colors cursor-pointer">
+                                </div>
+                            </div>
+
+                            <hr class="border-gray-100">
+
+                            <div>
+                                <label class="block text-sm font-bold text-gray-700 mb-1.5 ml-1">ຊື່ທະນາຄານ (Bank Name)</label>
+                                <input type="text" id="bankName" placeholder="ຕົວຢ່າງ: ທະນາຄານການຄ້າຕ່າງປະເທດລາວ (BCEL)" class="w-full px-4 py-2.5 bg-white border border-gray-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 transition-all shadow-sm">
+                            </div>
+                            <div>
+                                <label class="block text-sm font-bold text-gray-700 mb-1.5 ml-1">ເລກບັນຊີ (Account Number)</label>
+                                <input type="text" id="bankAccount" placeholder="ຕົວຢ່າງ: 01012000xxxx" class="w-full px-4 py-2.5 bg-white border border-gray-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 transition-all shadow-sm font-medium tracking-wider">
+                            </div>
+                            <div>
+                                <label class="block text-sm font-bold text-gray-700 mb-1.5 ml-1">ຊື່ບັນຊີ (Account Name)</label>
+                                <input type="text" id="bankAccountName" placeholder="ຕົວຢ່າງ: MR. JOHN DOE" class="w-full px-4 py-2.5 bg-white border border-gray-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 transition-all shadow-sm uppercase">
+                            </div>
+
+                            <button onclick="savePaymentSettings()" id="btnSavePayment" class="w-full bg-green-600 text-white font-bold px-6 py-3.5 rounded-xl hover:bg-green-700 transition-colors shadow-md mt-2">
+                                ບັນທຶກຂໍ້ມູນການຊຳລະເງິນ
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="bg-white border border-gray-100 rounded-[24px] shadow-sm p-6 lg:p-8 hover:shadow-md transition-shadow relative overflow-hidden">
+                        <div class="flex items-center gap-4 mb-6">
+                            <div class="w-12 h-12 rounded-xl bg-purple-50 text-purple-600 flex items-center justify-center shadow-inner">
+                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-6 h-6"><path stroke-linecap="round" stroke-linejoin="round" d="M9.53 16.122a3 3 0 00-5.78 1.128 2.25 2.25 0 01-2.4 2.245 4.5 4.5 0 008.4-2.245c0-.399-.078-.78-.22-1.128zm0 0a15.998 15.998 0 003.388-1.62m-5.043-.025a15.994 15.994 0 011.622-3.395m3.42 3.42a15.995 15.995 0 004.764-4.648l3.813-1.646m-7.142 8.65a15.999 15.999 0 004.744-4.654l1.646-3.813" /></svg>
+                            </div>
+                            <div>
+                                <h3 class="text-lg font-black text-gray-800">ສີສັນໜ້າເວັບໄຊ (Theme)</h3>
+                                <p class="text-[13px] text-gray-500 font-medium">ເລືອກສີພື້ນຫຼັງ ແລະ ສີປຸ່ມຕ່າງໆ</p>
+                            </div>
+                        </div>
+                        
+                        <div class="space-y-6">
+                            <div class="flex items-center justify-between border-b border-gray-100 pb-4">
+                                <div>
+                                    <label class="block text-sm font-bold text-gray-700">ສີຫຼັກ (Primary Color)</label>
+                                    <span class="text-xs text-gray-400">ສຳລັບປຸ່ມ ແລະ ເມນູຕ່າງໆ</span>
+                                </div>
+                                <input type="color" id="themePrimary" value="#a855f7" class="w-12 h-12 rounded cursor-pointer border-0 bg-transparent">
+                            </div>
+                            <div class="flex items-center justify-between border-b border-gray-100 pb-4">
+                                <div>
+                                    <label class="block text-sm font-bold text-gray-700">ສີພື້ນຫຼັງ (Background)</label>
+                                    <span class="text-xs text-gray-400">ສີພື້ນຫຼັງຂອງໜ້າເວັບໄຊ</span>
+                                </div>
+                                <input type="color" id="themeBackground" value="#f8f9fa" class="w-12 h-12 rounded cursor-pointer border-0 bg-transparent">
+                            </div>
+                            <button onclick="saveThemeSettings()" id="btnSaveTheme" class="w-full bg-purple-600 text-white font-bold px-6 py-3.5 rounded-xl hover:bg-purple-700 transition-colors shadow-md mt-4">
+                                ບັນທຶກທີມ
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </main>
+
+    <div id="productModal" class="fixed inset-0 z-[100] hidden flex items-center justify-center p-4 sm:p-0">
+        <div class="absolute inset-0 bg-slate-900/40 backdrop-blur-sm transition-opacity" onclick="closeModal('productModal')"></div>
+        <div class="bg-white sm:rounded-[28px] rounded-2xl shadow-[0_20px_50px_rgba(0,0,0,0.15)] w-full max-w-2xl relative z-10 anim-slide-down flex flex-col max-h-[95vh] overflow-hidden border border-white">
+            <div class="px-6 py-5 border-b border-gray-100 flex justify-between items-center bg-gradient-to-r from-gray-50 to-white">
+                <h3 class="text-xl font-black text-gray-800 flex items-center gap-3">
+                    <div class="w-10 h-10 rounded-full bg-blue-100 text-blue-600 flex items-center justify-center">
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor" class="w-5 h-5"><path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15" /></svg>
+                    </div>
+                    ເພີ່ມການ໌ດສິນຄ້າໃໝ່
+                </h3>
+                <button onclick="closeModal('productModal')" class="text-gray-400 hover:text-red-500 bg-white border border-gray-200 hover:border-red-200 hover:bg-red-50 p-2 rounded-xl transition-all shadow-sm">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor" class="w-5 h-5"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" /></svg>
+                </button>
+            </div>
+            <div class="p-6 md:p-8 overflow-y-auto">
+                <form id="addProductForm" class="space-y-6">
+                    <div>
+                        <label class="block text-sm font-bold text-gray-700 mb-2 ml-1">ຮູບພາບການ໌ດສິນຄ້າ <span class="text-red-500">*</span></label>
+                        <input type="file" id="prodImage" accept="image/*" class="block w-full border border-gray-200 rounded-2xl p-2.5 text-sm text-gray-500 cursor-pointer bg-gray-50/50 hover:bg-white transition-all shadow-sm">
+                    </div>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div class="md:col-span-2">
+                            <label class="block text-sm font-bold text-gray-700 mb-2 ml-1">ຊື່ສິນຄ້າ <span class="text-red-500">*</span></label>
+                            <input type="text" id="prodName" required placeholder="ຕົວຢ່າງ: ໄຟລ໌ດູດຫົວ 98%" class="w-full px-4 py-3 bg-gray-50/50 border border-gray-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 transition-all shadow-sm">
+                        </div>
+                        <div class="md:col-span-2">
+                            <label class="block text-sm font-bold text-gray-700 mb-2 ml-1">ລາຍລະອຽດສິນຄ້າ</label>
+                            <input type="text" id="prodDesc" placeholder="ຄຳອະທິບາຍສັ້ນໆກ່ຽວກັບສິນຄ້າ..." class="w-full px-4 py-3 bg-gray-50/50 border border-gray-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 transition-all shadow-sm">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-bold text-gray-700 mb-2 ml-1">ໝວດໝູ່ <span class="text-red-500">*</span></label>
+                            <select id="prodCategory" required class="w-full px-4 py-3 bg-gray-50/50 border border-gray-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 transition-all shadow-sm cursor-pointer"></select>
+                        </div>
+                        <div>
+                            <label class="block text-sm font-bold text-gray-700 mb-2 ml-1">ລາຄາ (Price - ฿) <span class="text-red-500">*</span></label>
+                            <div class="relative">
+                                <span class="absolute inset-y-0 left-0 pl-4 flex items-center text-gray-500 font-bold">฿</span>
+                                <input type="number" id="prodPrice" required placeholder="0.00" class="w-full pl-8 pr-4 py-3 bg-gray-50/50 border border-gray-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 transition-all shadow-sm">
+                            </div>
+                        </div>
+                        <div class="md:col-span-2">
+                            <label class="block text-sm font-bold text-gray-700 mb-2 ml-1">ຈຳນວນສະຕັອກ (Stock) <span class="text-red-500">*</span></label>
+                            <input type="number" id="prodStock" required placeholder="99" class="w-full px-4 py-3 bg-gray-50/50 border border-gray-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 transition-all shadow-sm">
+                        </div>
+                        <div class="md:col-span-2 mt-2">
+                            <label class="flex items-center gap-3 p-4 bg-orange-50/50 border border-orange-200/60 rounded-xl cursor-pointer hover:bg-orange-50 transition-colors group">
+                                <input type="checkbox" id="prodRecommended" class="w-5 h-5 text-orange-500 bg-white border-gray-300 rounded focus:ring-orange-500 cursor-pointer">
+                                <span class="text-sm font-bold text-orange-800 select-none group-hover:text-orange-900 transition-colors">🔥 ຕັ້ງເປັນສິນຄ້າແນະນຳ (ສະແດງໃນໜ້າຫຼັກພ້ອມ)</span>
+                            </label>
+                        </div>
+                    </div>
+                    <div class="flex flex-col-reverse sm:flex-row justify-end gap-3 pt-6 border-t border-gray-100 mt-8">
+                        <button type="button" onclick="closeModal('productModal')" class="px-6 py-3 rounded-xl font-bold text-gray-600 bg-gray-100 hover:bg-gray-200 w-full sm:w-auto text-center transition-colors">ຍົກເລີກ</button>
+                        <button type="submit" class="px-8 py-3 bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white font-bold rounded-xl shadow-[0_8px_20px_rgba(37,99,235,0.25)] w-full sm:w-auto text-center transition-all transform hover:-translate-y-0.5">ບັນທຶກສິນຄ້າ</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <div id="categoryModal" class="fixed inset-0 z-[100] hidden flex items-center justify-center p-4 sm:p-0">
+        <div class="absolute inset-0 bg-slate-900/40 backdrop-blur-sm transition-opacity" onclick="closeModal('categoryModal')"></div>
+        <div class="bg-white sm:rounded-[28px] rounded-2xl shadow-[0_20px_50px_rgba(0,0,0,0.15)] w-full max-w-md relative z-10 anim-slide-down flex flex-col overflow-hidden border border-white">
+            <div class="px-6 py-5 border-b border-gray-100 flex justify-between items-center bg-gradient-to-r from-gray-50 to-white">
+                <h3 class="text-xl font-black text-gray-800 flex items-center gap-3">
+                    <div class="w-10 h-10 rounded-full bg-indigo-100 text-indigo-600 flex items-center justify-center">
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor" class="w-5 h-5"><path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15" /></svg>
+                    </div>
+                    ເພີ່ມໝວດໝູ່ໃໝ່
+                </h3>
+                <button onclick="closeModal('categoryModal')" class="text-gray-400 hover:text-red-500 bg-white border border-gray-200 hover:border-red-200 hover:bg-red-50 p-2 rounded-xl transition-all shadow-sm">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor" class="w-5 h-5"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" /></svg>
+                </button>
+            </div>
+            <div class="p-6 md:p-8">
+                <form id="addCategoryForm" class="space-y-6">
+                    <div>
+                        <label class="block text-sm font-bold text-gray-700 mb-2 ml-1">ຮູບພາບໝວດໝູ່ <span class="text-red-500">*</span></label>
+                        <input type="file" id="catImage" accept="image/*" class="block w-full border border-gray-200 rounded-2xl p-2.5 text-sm text-gray-500 cursor-pointer bg-gray-50/50 hover:bg-white transition-all shadow-sm">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-bold text-gray-700 mb-2 ml-1">ຊື່ໝວດໝູ່ <span class="text-red-500">*</span></label>
+                        <input type="text" id="catName" required placeholder="ຕົວຢ່າງ: ໄຟລ໌ດູດຫົວ ມືຖື" class="w-full px-4 py-3 bg-gray-50/50 border border-gray-200 rounded-xl text-sm focus:outline-none focus:ring-4 focus:ring-indigo-500/10 focus:border-indigo-500 focus:bg-white transition-all shadow-sm">
+                    </div>
+                    <div class="flex flex-col-reverse sm:flex-row justify-end gap-3 pt-6 border-t border-gray-100 mt-8">
+                        <button type="button" onclick="closeModal('categoryModal')" class="px-6 py-3 rounded-xl font-bold text-gray-600 bg-gray-100 hover:bg-gray-200 w-full sm:w-auto text-center transition-colors">ຍົກເລີກ</button>
+                        <button type="submit" class="px-8 py-3 bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-700 text-white font-bold rounded-xl shadow-[0_8px_20px_rgba(79,70,229,0.25)] w-full sm:w-auto text-center transition-all transform hover:-translate-y-0.5">ບັນທຶກ</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <div id="addMoneyModal" class="fixed inset-0 z-[100] hidden flex items-center justify-center p-4 sm:p-0">
+        <div class="absolute inset-0 bg-slate-900/40 backdrop-blur-sm transition-opacity" onclick="closeModal('addMoneyModal')"></div>
+        <div class="bg-white sm:rounded-[28px] rounded-2xl shadow-[0_20px_50px_rgba(0,0,0,0.15)] w-full max-w-sm relative z-10 anim-slide-down flex flex-col overflow-hidden border border-white">
+            <div class="px-6 py-5 border-b border-gray-100 flex justify-between items-center bg-gradient-to-r from-gray-50 to-white">
+                <h3 class="text-xl font-black text-gray-800 flex items-center gap-3">
+                    <div class="w-10 h-10 rounded-full bg-blue-100 text-blue-600 flex items-center justify-center">
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor" class="w-5 h-5"><path stroke-linecap="round" stroke-linejoin="round" d="M12 6v12m-3-2.818l.879.659c1.171.879 3.07.879 4.242 0 1.172-.879 1.172-2.303 0-3.182C13.536 12.219 12.768 12 12 12c-.725 0-1.45-.22-2.003-.659-1.106-.879-1.106-2.303 0-3.182s2.9-.879 4.006 0l.415.33M21 12a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
+                    </div>
+                    ເຕີມເງິນໃຫ້ຜູ້ໃຊ້
+                </h3>
+                <button onclick="closeModal('addMoneyModal')" class="text-gray-400 hover:text-red-500 bg-white border border-gray-200 hover:bg-red-50 p-2 rounded-xl transition-all shadow-sm">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor" class="w-5 h-5"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" /></svg>
+                </button>
+            </div>
+            <div class="p-6 md:p-8">
+                <div class="mb-4 text-center">
+                    <p class="text-sm text-gray-500 font-medium">ເຕີມເງິນໃຫ້ກັບຊື່ຜູ້ໃຊ້:</p>
+                    <h4 id="addMoneyUserName" class="text-lg font-bold text-blue-600 mt-1">Username</h4>
+                </div>
+                <div>
+                    <label class="block text-sm font-bold text-gray-700 mb-2 ml-1">ຈຳນວນເງິນ (฿) <span class="text-red-500">*</span></label>
+                    <input type="number" id="amountToAdd" required placeholder="0.00" class="w-full px-4 py-3 bg-gray-50/50 border border-gray-200 rounded-xl text-lg font-bold text-center focus:outline-none focus:ring-4 focus:ring-blue-500/10 focus:border-blue-500 transition-all shadow-sm">
+                </div>
+                <div class="flex flex-col-reverse sm:flex-row justify-end gap-3 pt-6 border-t border-gray-100 mt-8">
+                    <button type="button" onclick="closeModal('addMoneyModal')" class="px-6 py-3 rounded-xl font-bold text-gray-600 bg-gray-100 hover:bg-gray-200 w-full sm:w-auto text-center transition-colors">ຍົກເລີກ</button>
+                    <button onclick="confirmAddMoney()" class="px-8 py-3 bg-blue-600 hover:bg-blue-700 text-white font-bold rounded-xl shadow-md w-full sm:w-auto text-center transition-colors">ເຕີມເງິນ</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="toast-notification" class="fixed top-5 right-5 z-[200] bg-white border-l-4 border-green-500 shadow-[0_10px_40px_rgba(0,0,0,0.1)] rounded-xl p-4 flex items-center gap-3 transform transition-all duration-500 translate-x-[150%] opacity-0">
+        <div id="toast-icon" class="w-8 h-8 rounded-full bg-green-100 text-green-500 flex items-center justify-center flex-shrink-0">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor" class="w-5 h-5"><path stroke-linecap="round" stroke-linejoin="round" d="M4.5 12.75l6 6 9-13.5" /></svg>
+        </div>
+        <div>
+            <h4 id="toast-title" class="text-sm font-bold text-gray-800">ສຳເລັດ!</h4>
+            <p id="toast-message" class="text-[13px] text-gray-500 font-medium">ບັນທຶກຂໍ້ມູນສຳເລັດແລ້ວ</p>
+        </div>
+        <button onclick="closeNotification()" class="ml-4 text-gray-400 hover:text-gray-600 transition-colors focus:outline-none">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor" class="w-4 h-4"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" /></svg>
+        </button>
+    </div>
+
+    <script>
+        let currentBanners = [];
+        let currentAddMoneyUserId = null;
+
+        // ----------------- TOAST NOTIFICATION LOGIC -----------------
+        let toastTimeout;
+        function showNotification(title, message, isError = false) {
+            const toast = document.getElementById('toast-notification');
+            const iconContainer = document.getElementById('toast-icon');
+            const titleEl = document.getElementById('toast-title');
+            const messageEl = document.getElementById('toast-message');
+
+            titleEl.innerText = title;
+            messageEl.innerText = message;
+
+            if (isError) {
+                toast.classList.replace('border-green-500', 'border-red-500');
+                iconContainer.classList.replace('bg-green-100', 'bg-red-100');
+                iconContainer.classList.replace('text-green-500', 'text-red-500');
+                iconContainer.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor" class="w-5 h-5"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" /></svg>`;
+            } else {
+                toast.classList.replace('border-red-500', 'border-green-500');
+                iconContainer.classList.replace('bg-red-100', 'bg-green-100');
+                iconContainer.classList.replace('text-red-500', 'text-green-500');
+                iconContainer.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor" class="w-5 h-5"><path stroke-linecap="round" stroke-linejoin="round" d="M4.5 12.75l6 6 9-13.5" /></svg>`;
+            }
+
+            toast.classList.remove('translate-x-[150%]', 'opacity-0');
+            toast.classList.add('translate-x-0', 'opacity-100');
+
+            clearTimeout(toastTimeout);
+            toastTimeout = setTimeout(() => { closeNotification(); }, 3000);
+        }
+
+        function closeNotification() {
+            const toast = document.getElementById('toast-notification');
+            toast.classList.remove('translate-x-0', 'opacity-100');
+            toast.classList.add('translate-x-[150%]', 'opacity-0');
+        }
+
+        // ----------------- TAB & MODAL LOGIC -----------------
+        function switchTab(tabId) {
+            document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active'));
+            document.querySelectorAll('nav button').forEach(el => {
+                if(el.id.startsWith('tab-btn-')) {
+                    el.classList.remove('bg-gradient-to-r', 'from-blue-50', 'to-white', 'text-blue-700', 'border-l-4', 'border-blue-600', 'shadow-sm');
+                    el.classList.add('text-gray-500', 'hover:bg-gray-50', 'hover:text-gray-800', 'border-l-4', 'border-transparent');
+                }
+            });
+
+            document.getElementById('tab-' + tabId).classList.add('active');
+            
+            const activeBtn = document.getElementById('tab-btn-' + tabId);
+            activeBtn.classList.remove('text-gray-500', 'hover:bg-gray-50', 'hover:text-gray-800', 'border-transparent');
+            activeBtn.classList.add('bg-gradient-to-r', 'from-blue-50', 'to-white', 'text-blue-700', 'border-blue-600', 'shadow-sm');
+
+            let title = "", subtitle = "";
+            if(tabId === 'products') { title = "ຈັດການສິນຄ້າ"; subtitle = "ຄຸ້ມຄອງລາຍການສິນຄ້າທັງໝົດໃນຮ້ານ"; }
+            if(tabId === 'categories') { title = "ໝວດໝູ່ສິນຄ້າ"; subtitle = "ຈັດການໝວດໝູ່ເພື່ອໃຫ້ລູກຄ້າຄົ້ນຫາໄດ້ງ່າຍ"; }
+            if(tabId === 'users') { title = "ຈັດການຂໍ້ມູນຜູ້ໃຊ້"; subtitle = "ຈັດການຍົດ (Admin/Customer), ເຕີມເງິນ ແລະ ແບນ"; }
+            if(tabId === 'settings') { title = "ຕັ້ງຄ່າໂລໂກ້ & ແບນເນີ"; subtitle = "ປັບແຕ່ງໜ້າຕາເວັບໄຊ ແລະ ຂໍ້ມູນຕິດຕໍ່"; }
+            if(tabId === 'theme') { title = "ຕັ້ງຄ່າທີມ & ຊຳລະເງິນ"; subtitle = "ປ່ຽນສີພື້ນຫຼັງ, ຕັ້ງຄ່າຮູບ QR ແລະ ເລກບັນຊີຮັບເງິນ"; }
+            document.getElementById('page-title').innerText = title;
+            document.getElementById('page-subtitle').innerText = subtitle;
+        }
+
+        function openModal(modalId) {
+            document.getElementById(modalId).classList.remove('hidden');
+            document.getElementById(modalId).classList.add('flex');
+        }
+
+        function closeModal(modalId) {
+            document.getElementById(modalId).classList.add('hidden');
+            document.getElementById(modalId).classList.remove('flex');
+        }
+
+        // ----------------- RESET LOGIC -----------------
+        function resetMenuData(menuType) {
+            if (!confirm('ທ່ານແນ່ໃຈບໍ່ວ່າຕ້ອງການລ້າງຂໍ້ມູນທັງໝົດໃນໜ້ານີ້? (ບໍ່ສາມາດກູ້ຄືນໄດ້)')) return;
+
+            if (menuType === 'products') {
+                localStorage.setItem('myProductsDB', JSON.stringify({}));
+                loadProducts();
+                showNotification('ສຳເລັດ!', 'ລ້າງຂໍ້ມູນສິນຄ້າທັງໝົດແລ້ວ');
+            } else if (menuType === 'categories') {
+                localStorage.setItem('myCategoriesDB', JSON.stringify({}));
+                loadCategories();
+                showNotification('ສຳເລັດ!', 'ລ້າງຂໍ້ມູນໝວດໝູ່ທັງໝົດແລ້ວ');
+            } else if (menuType === 'users') {
+                localStorage.setItem('myUsersDB', JSON.stringify({}));
+                loadUsers();
+                showNotification('ສຳເລັດ!', 'ລ້າງຂໍ້ມູນຜູ້ໃຊ້ທັງໝົດແລ້ວ');
+            } else if (menuType === 'settings') {
+                let s = JSON.parse(localStorage.getItem('mySiteSettingsDB')) || {};
+                s.logo = ''; s.banners = []; s.contactFB = ''; s.contactWA = ''; s.contactTikTok = ''; s.orderWA = '';
+                localStorage.setItem('mySiteSettingsDB', JSON.stringify(s));
+                document.getElementById('inputLogo').value = "";
+                document.getElementById('inputContactFB').value = "";
+                document.getElementById('inputContactWA').value = "";
+                document.getElementById('inputContactTikTok').value = "";
+                document.getElementById('inputOrderWA').value = "";
+                loadSettings();
+                showNotification('ສຳເລັດ!', 'ຄືນຄ່າການຕັ້ງຄ່າທັງໝົດແລ້ວ');
+            } else if (menuType === 'theme') {
+                let s = JSON.parse(localStorage.getItem('mySiteSettingsDB')) || {};
+                s.qrCode = ''; s.bankName = ''; s.bankAccount = ''; s.bankAccountName = '';
+                s.themePrimary = '#a855f7'; s.themeBackground = '#f8f9fa';
+                localStorage.setItem('mySiteSettingsDB', JSON.stringify(s));
+                document.getElementById('inputQR').value = "";
+                document.getElementById('bankName').value = "";
+                document.getElementById('bankAccount').value = "";
+                document.getElementById('bankAccountName').value = "";
+                loadSettings();
+                showNotification('ສຳເລັດ!', 'ຄືນຄ່າທີມ ແລະ ການຊຳລະເງິນແລ້ວ');
+            }
+        }
+
+        // ----------------- CORE LOGIC -----------------
+        document.addEventListener('DOMContentLoaded', () => {
+            initMockData(); 
+            loadProducts();
+            loadCategories();
+            loadUsers();
+            loadSettings();
+            
+            document.getElementById('inputNewBanner').addEventListener('change', function(e) {
+                if (this.files && this.files[0]) {
+                    compressImageAndSave(this.files[0], 1200, function(base64Img) {
+                        currentBanners.push(base64Img); 
+                        renderBannersPreview(); 
+                    }, null, "");
+                }
+                this.value = ''; 
+            });
+
+            switchTab('products');
+        });
+
+        function initMockData() {
+            if (!localStorage.getItem('myProductsDB')) localStorage.setItem('myProductsDB', JSON.stringify({}));
+            if (!localStorage.getItem('mySiteSettingsDB')) localStorage.setItem('mySiteSettingsDB', JSON.stringify({}));
+            if (!localStorage.getItem('myCategoriesDB')) localStorage.setItem('myCategoriesDB', JSON.stringify({}));
+            if (!localStorage.getItem('myUsersDB')) localStorage.setItem('myUsersDB', JSON.stringify({}));
+        }
+
+        // ========== 1. PRODUCTS MANAGEMENT ==========
+        function loadProducts() {
+            const productList = document.getElementById('productList');
+            if (!productList) return;
+            productList.innerHTML = ''; 
+
+            const productsDB = JSON.parse(localStorage.getItem('myProductsDB')) || {};
+            const productKeys = Object.keys(productsDB);
+
+            if (productKeys.length === 0) {
+                productList.innerHTML = `<tr><td colspan="6" class="py-16 px-4 text-center text-gray-400">ຍັງບໍ່ມີຂໍ້ມູນສິນຄ້າ</td></tr>`;
+                return;
+            }
+
+            productKeys.reverse().forEach(id => {
+                const product = productsDB[id];
+                const tr = document.createElement('tr');
+                tr.className = "hover:bg-blue-50/30 border-b border-gray-100 group";
+                const recBadge = product.isRecommended ? `<span class="ml-2 px-2 py-0.5 rounded text-[10px] bg-orange-100 text-orange-600">🔥</span>` : '';
+                
+                tr.innerHTML = `
+                    <td class="p-4 pl-6"><img src="${product.image}" class="w-16 h-12 rounded object-cover shadow-sm border border-gray-100"></td>
+                    <td class="p-4 font-bold text-gray-800">${product.name} ${recBadge}</td>
+                    <td class="p-4"><span class="bg-indigo-50 text-indigo-600 px-3 py-1 rounded text-[12px] font-bold border border-indigo-100/50">${product.category}</span></td>
+                    <td class="p-4 font-black text-blue-600">${Number(product.price).toLocaleString('th-TH')} ฿</td>
+                    <td class="p-4"><span class="bg-emerald-50 text-emerald-600 font-bold px-3 py-1 rounded text-[12px] border border-emerald-100/50">${product.stock} ຊິ້ນ</span></td>
+                    <td class="p-4 text-center pr-6">
+                        <button onclick="deleteProduct('${id}')" class="p-2 text-gray-400 hover:text-white hover:bg-red-500 rounded-lg transition-all shadow-sm hover:shadow-md"><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path></svg></button>
+                    </td>
+                `;
+                productList.appendChild(tr);
+            });
+        }
+
+        function saveToProductsDB(name, desc, category, price, stock, isRecommended, imageBase64, submitBtn, originalBtnText) {
+            try {
+                let productsDB = JSON.parse(localStorage.getItem('myProductsDB')) || {};
+                productsDB[Date.now().toString()] = { name, desc: desc||'-', category, price, stock, isRecommended, image: imageBase64 };
+                localStorage.setItem('myProductsDB', JSON.stringify(productsDB));
+                showNotification('ສຳເລັດ!', 'ບັນທຶກການ໌ດສິນຄ້າສຳເລັດແລ້ວ');
+                closeModal('productModal'); 
+                document.getElementById('addProductForm').reset(); 
+                loadProducts(); 
+            } catch (error) { 
+                handleQuotaError(error); 
+            } finally { 
+                resetButton(submitBtn, originalBtnText); 
+            }
+        }
+
+        function deleteProduct(id) {
+            if (confirm("ທ່ານຕ້ອງການລຶບສິນຄ້ານີ້ແທ້ບໍ່?")) {
+                let productsDB = JSON.parse(localStorage.getItem('myProductsDB')) || {};
+                delete productsDB[id];
+                localStorage.setItem('myProductsDB', JSON.stringify(productsDB));
+                loadProducts(); 
+                showNotification('ສຳເລັດ!', 'ລຶບສິນຄ້າສຳເລັດແລ້ວ');
+            }
+        }
+
+        // ========== 2. CATEGORIES MANAGEMENT ==========
+        function loadCategories() {
+            const categoryList = document.getElementById('categoryList');
+            const categorySelect = document.getElementById('prodCategory');
+            if (!categoryList || !categorySelect) return;
+            categoryList.innerHTML = ''; 
+            categorySelect.innerHTML = '<option value="">ເລືອກໝວດໝູ່...</option>';
+            
+            const catsDB = JSON.parse(localStorage.getItem('myCategoriesDB')) || {};
+            const catKeys = Object.keys(catsDB);
+
+            if (catKeys.length === 0) {
+                categoryList.innerHTML = `<tr><td colspan="4" class="py-16 text-center text-gray-400">ຍັງບໍ່ມີຂໍ້ມູນໝວດໝູ່</td></tr>`;
+                return;
+            }
+
+            let index = 1;
+            catKeys.forEach(id => {
+                const catName = catsDB[id].name;
+                const catImage = catsDB[id].image || 'https://placehold.co/400x300/e2e8f0/64748b';
+                categoryList.innerHTML += `
+                    <tr class="border-b border-gray-100 hover:bg-indigo-50/30 transition-colors group">
+                        <td class="p-4 pl-6 text-gray-400 font-bold">${index++}</td>
+                        <td class="p-4"><img src="${catImage}" class="w-16 h-10 rounded-lg object-cover shadow-sm border border-gray-100"></td>
+                        <td class="p-4 font-bold text-gray-800">${catName}</td>
+                        <td class="p-4 text-center pr-6">
+                            <button onclick="deleteCategory('${id}')" class="p-2 text-gray-400 hover:text-white hover:bg-red-500 rounded-lg transition-all shadow-sm hover:shadow-md"><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path></svg></button>
+                        </td>
+                    </tr>
+                `;
+                categorySelect.innerHTML += `<option value="${catName}">${catName}</option>`;
+            });
+        }
+
+        function saveToCategoriesDB(name, imageBase64, submitBtn, originalText) {
+            try {
+                let catsDB = JSON.parse(localStorage.getItem('myCategoriesDB')) || {};
+                catsDB[Date.now().toString()] = { name: name, image: imageBase64 };
+                localStorage.setItem('myCategoriesDB', JSON.stringify(catsDB));
+                closeModal('categoryModal'); 
+                document.getElementById('addCategoryForm').reset(); 
+                loadCategories();
+                showNotification('ສຳເລັດ!', 'ບັນທຶກໝວດໝູ່ສຳເລັດແລ້ວ');
+            } catch (err) { 
+                handleQuotaError(err); 
+            } finally { 
+                resetButton(submitBtn, originalText); 
+            }
+        }
+
+        function deleteCategory(id) {
+            if (confirm("ແນ່ໃຈບໍ່ວ່າຕ້ອງການລຶບໝວດໝູ່ນີ້?")) {
+                let catsDB = JSON.parse(localStorage.getItem('myCategoriesDB')) || {};
+                delete catsDB[id];
+                localStorage.setItem('myCategoriesDB', JSON.stringify(catsDB));
+                loadCategories(); 
+                showNotification('ສຳເລັດ!', 'ລຶບໝວດໝູ່ສຳເລັດແລ້ວ');
+            }
+        }
+
+        // ========== 3. USERS MANAGEMENT ==========
+        function loadUsers() {
+            const userList = document.getElementById('userList');
+            if (!userList) return;
+            userList.innerHTML = '';
+
+            const usersDB = JSON.parse(localStorage.getItem('myUsersDB')) || {};
+            const userKeys = Object.keys(usersDB);
+
+            if (userKeys.length === 0) {
+                userList.innerHTML = `<tr><td colspan="6" class="py-16 text-center text-gray-400">ຍັງບໍ່ມີຂໍ້ມູນຜູ້ໃຊ້</td></tr>`;
+                return;
+            }
+
+            userKeys.forEach(id => {
+                const user = usersDB[id];
+                const tr = document.createElement('tr');
+                tr.className = "hover:bg-blue-50/30 border-b border-gray-100 transition-colors";
+                
+                const statusBadge = user.banned 
+                    ? `<span class="bg-red-50 text-red-600 px-2.5 py-1 rounded-lg font-bold text-[11px] border border-red-100">ແບນ (Banned)</span>`
+                    : `<span class="bg-green-50 text-green-600 px-2.5 py-1 rounded-lg font-bold text-[11px] border border-green-100">ປົກກະຕິ</span>`;
+
+                tr.innerHTML = `
+                    <td class="p-4 pl-6 text-gray-500 font-medium">${id}</td>
+                    <td class="p-4 font-bold text-gray-800">${user.username}</td>
+                    <td class="p-4">
+                        <select onchange="updateUserRole('${id}', this.value)" class="bg-gray-50 border border-gray-200 rounded-lg px-2 py-1.5 text-xs font-bold text-gray-700 outline-none focus:border-blue-500 cursor-pointer shadow-sm">
+                            <option value="ລູກຄ້າ" ${user.role === 'ລູກຄ້າ' ? 'selected' : ''}>ລູກຄ້າ (Customer)</option>
+                            <option value="ແອັດມິນ" ${user.role === 'ແອັດມິນ' ? 'selected' : ''}>ແອັດມິນ (Admin)</option>
+                        </select>
+                    </td>
+                    <td class="p-4 font-black text-blue-600 text-[15px]">${Number(user.balance).toLocaleString('th-TH')} ฿</td>
+                    <td class="p-4">${statusBadge}</td>
+                    <td class="p-4 text-center pr-6">
+                        <div class="flex items-center justify-center gap-2">
+                            <button onclick="openAddMoneyModal('${id}', '${user.username}')" class="p-1.5 bg-blue-50 text-blue-600 hover:bg-blue-600 hover:text-white rounded-lg transition-all shadow-sm" title="ເຕີມເງິນ">
+                                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6" /></svg>
+                            </button>
+                            <button onclick="toggleBanUser('${id}')" class="p-1.5 ${user.banned ? 'bg-gray-100 text-gray-600 hover:bg-gray-600 hover:text-white' : 'bg-red-50 text-red-600 hover:bg-red-600 hover:text-white'} rounded-lg transition-all shadow-sm" title="${user.banned ? 'ປົດແບນ' : 'ແບນລູກຄ້າ'}">
+                                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M18.364 18.364A9 9 0 005.636 5.636m12.728 12.728A9 9 0 015.636 5.636m12.728 12.728L5.636 5.636" /></svg>
+                            </button>
+                        </div>
+                    </td>
+                `;
+                userList.appendChild(tr);
+            });
+        }
+
+        function updateUserRole(id, newRole) {
+            let usersDB = JSON.parse(localStorage.getItem('myUsersDB')) || {};
+            if(usersDB[id]) {
+                usersDB[id].role = newRole;
+                localStorage.setItem('myUsersDB', JSON.stringify(usersDB));
+                showNotification('ສຳເລັດ!', 'ປ່ຽນຍົດຜູ້ໃຊ້ສຳເລັດແລ້ວ');
+            }
+        }
+
+        function toggleBanUser(id) {
+            let usersDB = JSON.parse(localStorage.getItem('myUsersDB')) || {};
+            if(usersDB[id]) {
+                usersDB[id].banned = !usersDB[id].banned;
+                localStorage.setItem('myUsersDB', JSON.stringify(usersDB));
+                loadUsers();
+                if(usersDB[id].banned) showNotification('ແບນສຳເລັດ', 'ລະງັບການໃຊ້ງານຜູ້ໃຊ້ນີ້ແລ້ວ', true);
+                else showNotification('ປົດແບນສຳເລັດ', 'ຜູ້ໃຊ້ນີ້ສາມາດໃຊ້ງານໄດ້ປົກກະຕິ', false);
+            }
+        }
+
+        function openAddMoneyModal(id, username) {
+            currentAddMoneyUserId = id;
+            document.getElementById('addMoneyUserName').innerText = username;
+            document.getElementById('amountToAdd').value = '';
+            openModal('addMoneyModal');
+        }
+
+        function confirmAddMoney() {
+            const amount = parseFloat(document.getElementById('amountToAdd').value);
+            if(isNaN(amount) || amount <= 0) {
+                showNotification('ແຈ້ງເຕືອນ', 'ກະລຸນາໃສ່ຈຳນວນເງินທີ່ຖືກຕ້ອງ', true);
+                return;
+            }
+
+            let usersDB = JSON.parse(localStorage.getItem('myUsersDB')) || {};
+            if(usersDB[currentAddMoneyUserId]) {
+                usersDB[currentAddMoneyUserId].balance += amount;
+                localStorage.setItem('myUsersDB', JSON.stringify(usersDB));
+                loadUsers();
+                closeModal('addMoneyModal');
+                showNotification('ສຳເລັດ!', `ເຕີມເງິນເຂົ້າລະບົບ ${amount.toLocaleString()} ฿ ຮຽບຮ້ອຍ`);
+            }
+        }
+
+        // ========== 4. SETTINGS & THEME MANAGEMENT ==========
+        function loadSettings() {
+            const settings = JSON.parse(localStorage.getItem('mySiteSettingsDB')) || {};
+            
+            // Logo & Theme
+            if(settings.logo) {
+                document.getElementById('previewLogo').src = settings.logo;
+                document.getElementById('sidebar-logo-preview').innerHTML = `<img src="${settings.logo}" class="w-full h-full object-cover">`;
+            }
+            if(settings.themePrimary) document.getElementById('themePrimary').value = settings.themePrimary;
+            if(settings.themeBackground) document.getElementById('themeBackground').value = settings.themeBackground;
+            if(settings.qrCode) document.getElementById('previewQR').src = settings.qrCode;
+            
+            // Bank Info
+            if(settings.bankName) document.getElementById('bankName').value = settings.bankName;
+            if(settings.bankAccount) document.getElementById('bankAccount').value = settings.bankAccount;
+            if(settings.bankAccountName) document.getElementById('bankAccountName').value = settings.bankAccountName;
+            
+            // Contact Links
+            if(settings.contactFB) document.getElementById('inputContactFB').value = settings.contactFB;
+            if(settings.contactWA) document.getElementById('inputContactWA').value = settings.contactWA;
+            if(settings.contactTikTok) document.getElementById('inputContactTikTok').value = settings.contactTikTok;
+            if(settings.orderWA) document.getElementById('inputOrderWA').value = settings.orderWA;
+
+            // Load Banners
+            if (settings.banners && Array.isArray(settings.banners)) currentBanners = settings.banners;
+            else if (settings.banner) currentBanners = [settings.banner];
+            
+            renderBannersPreview();
+        }
+
+        function renderBannersPreview() {
+            const container = document.getElementById('banners-container');
+            container.innerHTML = ''; 
+            if (currentBanners.length === 0) {
+                container.innerHTML = `<div class="col-span-full aspect-[3/1] bg-slate-50 border border-gray-200 flex items-center justify-center text-gray-400 rounded-xl">ຍັງບໍ່ມີປ້າຍແບນເນີ</div>`;
+                return;
+            }
+            currentBanners.forEach((base64, index) => {
+                container.innerHTML += `
+                    <div class="relative rounded-xl overflow-hidden border border-gray-200 shadow-sm group">
+                        <img src="${base64}" class="w-full aspect-[3/1] object-cover">
+                        <button onclick="removeBanner(${index})" class="absolute top-2 right-2 bg-red-500 text-white p-2 rounded-lg opacity-0 group-hover:opacity-100 transition-opacity shadow-md hover:bg-red-600 focus:outline-none"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor" class="w-4 h-4"><path stroke-linecap="round" stroke-linejoin="round" d="M14.74 9l-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 01-2.244 2.077H8.084a2.25 2.25 0 01-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 00-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 013.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 00-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 00-7.5 0" /></svg></button>
+                    </div>`;
+            });
+        }
+
+        function removeBanner(index) { 
+            currentBanners.splice(index, 1); 
+            renderBannersPreview(); 
+        }
+
+        function saveSettingsLogo() {
+            const fileInput = document.getElementById('inputLogo');
+            const btn = document.getElementById('btnSaveLogo');
+            const originalText = btn.innerText;
+            btn.innerText = "ກຳລັງບັນທຶກ..."; 
+            btn.disabled = true;
+
+            if (fileInput.files && fileInput.files[0]) {
+                compressImageAndSave(fileInput.files[0], 500, function(base64Img) {
+                    try {
+                        let settings = JSON.parse(localStorage.getItem('mySiteSettingsDB')) || {};
+                        settings.logo = base64Img;
+                        localStorage.setItem('mySiteSettingsDB', JSON.stringify(settings));
+                        document.getElementById('previewLogo').src = base64Img;
+                        document.getElementById('sidebar-logo-preview').innerHTML = `<img src="${base64Img}" class="w-full h-full object-cover">`;
+                        showNotification('ສຳເລັດ!', 'ອັບເດດໂລໂກ້ຮ້ານສຳເລັດແລ້ວ');
+                    } catch (err) { 
+                        handleQuotaError(err); 
+                    } finally { 
+                        resetButton(btn, originalText); 
+                        fileInput.value = ""; 
+                    }
+                }, btn, originalText);
+            } else { 
+                showNotification('ແຈ້ງເຕືອນ', 'ກະລຸນາເລືອກຮູບໂລໂກ້ກ່ອນ!', true); 
+                resetButton(btn, originalText); 
+            }
+        }
+
+        function saveSettingsBannerAndLinks() {
+            const btn = document.getElementById('btnSaveSettings');
+            const originalText = btn.innerText;
+            btn.innerText = "ກຳລັງບັນທຶກ..."; 
+            btn.disabled = true;
+            
+            try {
+                let settings = JSON.parse(localStorage.getItem('mySiteSettingsDB')) || {};
+                settings.banners = currentBanners;
+                settings.contactFB = document.getElementById('inputContactFB').value;
+                settings.contactWA = document.getElementById('inputContactWA').value;
+                settings.contactTikTok = document.getElementById('inputContactTikTok').value;
+                settings.orderWA = document.getElementById('inputOrderWA').value;
+                
+                localStorage.setItem('mySiteSettingsDB', JSON.stringify(settings));
+                showNotification('ສຳເລັດ!', 'ອັບເດດການຕັ້ງຄ່າທັງໝົດສຳເລັດແລ້ວ');
+            } catch (err) { 
+                handleQuotaError(err); 
+            } finally { 
+                resetButton(btn, originalText); 
+            }
+        }
+
+        function savePaymentSettings() {
+            const btn = document.getElementById('btnSavePayment');
+            const fileInput = document.getElementById('inputQR');
+            const originalText = btn.innerText;
+            
+            btn.innerText = "ກຳລັງບັນທຶກ..."; 
+            btn.disabled = true;
+
+            const saveDetails = (base64Img) => {
+                try {
+                    let settings = JSON.parse(localStorage.getItem('mySiteSettingsDB')) || {};
+                    if(base64Img) settings.qrCode = base64Img;
+                    settings.bankName = document.getElementById('bankName').value;
+                    settings.bankAccount = document.getElementById('bankAccount').value;
+                    settings.bankAccountName = document.getElementById('bankAccountName').value;
+                    
+                    localStorage.setItem('mySiteSettingsDB', JSON.stringify(settings));
+                    if(base64Img) document.getElementById('previewQR').src = base64Img;
+                    showNotification('ສຳເລັດ!', 'ອັບເດດຂໍ້ມູນການຊຳລະເງິນສຳເລັດແລ້ວ');
+                } catch (err) { 
+                    handleQuotaError(err); 
+                } finally { 
+                    resetButton(btn, originalText); 
+                    if(fileInput) fileInput.value = ""; 
+                }
+            };
+
+            if (fileInput && fileInput.files && fileInput.files[0]) {
+                compressImageAndSave(fileInput.files[0], 800, saveDetails, btn, originalText);
+            } else {
+                saveDetails(null);
+            }
+        }
+
+        function saveThemeSettings() {
+            const btn = document.getElementById('btnSaveTheme');
+            const originalText = btn.innerText;
+            btn.innerText = "ກຳລັງບັນທຶກ..."; 
+            btn.disabled = true;
+            
+            try {
+                let settings = JSON.parse(localStorage.getItem('mySiteSettingsDB')) || {};
+                settings.themePrimary = document.getElementById('themePrimary').value;
+                settings.themeBackground = document.getElementById('themeBackground').value;
+                localStorage.setItem('mySiteSettingsDB', JSON.stringify(settings));
+                showNotification('ສຳເລັດ!', 'ອັບເດດສີສັນ Theme ຮ້ານສຳເລັດແລ້ວ');
+            } catch (err) { 
+                handleQuotaError(err); 
+            } finally { 
+                resetButton(btn, originalText); 
+            }
+        }
+
+        // --- Utils ---
+        function compressImageAndSave(file, maxSize, callback, btnElement, originalBtnText) {
+            const reader = new FileReader();
+            reader.onload = function(event) {
+                const img = new Image();
+                img.onload = function() {
+                    const canvas = document.createElement('canvas');
+                    let width = img.width; let height = img.height;
+                    
+                    if (width > height) { 
+                        if (width > maxSize) { height *= maxSize / width; width = maxSize; } 
+                    } else { 
+                        if (height > maxSize) { width *= maxSize / height; height = maxSize; } 
+                    }
+                    
+                    canvas.width = width; canvas.height = height;
+                    const ctx = canvas.getContext('2d');
+                    ctx.drawImage(img, 0, 0, width, height);
+                    const compressedBase64 = canvas.toDataURL('image/jpeg', 0.7);
+                    callback(compressedBase64);
+                };
+                if(btnElement) {
+                    img.onerror = function() { 
+                        showNotification('ຂໍ້ຜິດພາດ!', 'ບໍ່ສາມາດອ່ານໄຟລ໌ຮູບພາບໄດ້', true); 
+                        resetButton(btnElement, originalBtnText); 
+                    };
+                }
+                img.src = event.target.result;
+            };
+            if(btnElement) {
+                reader.onerror = function() { 
+                    showNotification('ຂໍ້ຜິດພາດ!', 'ອ່ານໄຟລ໌ລົ້ມເຫຼວ', true); 
+                    resetButton(btnElement, originalBtnText); 
+                };
+            }
+            reader.readAsDataURL(file);
+        }
+
+        function handleQuotaError(error) {
+            console.error("Storage Error:", error);
+            if (error.name === 'QuotaExceededError' || error.message.includes('quota')) {
+                showNotification('ພື້ນທີ່ເຕັມ!', 'ຮູບພາບໃຫຍ່ເກີນໄປ ຫຼື ມີຂໍ້ມູນຫຼາຍເກີນໄປ', true);
+            } else {
+                showNotification('ຂໍ້ຜິດພາດ!', error.message, true);
+            }
+        }
+
+        function resetButton(btn, text) {
+            if(btn) {
+                btn.innerHTML = btn.innerHTML.replace("ກຳລັງປະມວນຜົນ...", text).replace("ກຳລັງບັນທຶກ...", text);
+                btn.innerText = text; 
+                btn.disabled = false; 
+                btn.classList.remove('opacity-50', 'cursor-not-allowed');
+            }
+        }
+    </script>
+</body>
+</html>
