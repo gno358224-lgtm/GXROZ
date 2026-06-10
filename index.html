@@ -11,8 +11,8 @@
         <style>
             body {
                 font-family: 'Noto Sans Lao', 'Kanit', sans-serif;
-                background-color: #0f0a19; /* เปลี่ยนเป็นสีดำมืด */
-                color: #e5e7eb; /* เปลี่ยนสีตัวอักษรพื้นฐานให้สว่างขึ้น */
+                background-color: #0f0a19; 
+                color: #e5e7eb; 
             }
 
             button, a, input {
@@ -51,7 +51,6 @@
             .reveal-item.is-visible.delay-300 { transition-delay: 300ms; }
             .reveal-item.is-visible.delay-400 { transition-delay: 400ms; }
 
-            /* Animation สำหรับทำให้คลื่นขยับ */
             @keyframes waveMove {
                 0% { transform: translateX(0); }
                 100% { transform: translateX(-50%); }
@@ -70,7 +69,6 @@
             .wave-medium { animation: waveMove 5s linear infinite; }
             .wave-slow { animation: waveMove 7s linear infinite; }
 
-            /* Preloader */
             #preloader {
                 position: fixed;
                 inset: 0;
@@ -98,7 +96,6 @@
                 border-color: #7c3aed;
             }
 
-            /* ================= CSS สำหรับเอฟเฟกต์เงาวับ (Shimmer) ================= */
             @keyframes shimmer {
                 0% { transform: translateX(-150%) skewX(-15deg); }
                 50% { transform: translateX(250%) skewX(-15deg); }
@@ -149,9 +146,9 @@
                         </svg>
                     </button>
 
-                    <a href="admin-dashboard.html" class="hidden md:flex items-center flex-shrink-0 relative group">
-                        <img id="nav-backend-ກົດບ່ອນນີ້ໄປຫນ້າາກ້ໄຂຮ້ານ" src="https://placehold.co/120x40/a855f7/ffffff?text=LOGO" alt="Shop Logo" class="h-8 md:h-9 object-contain rounded transition-transform group-hover:scale-105">
-                    </a>
+                    <div class="hidden md:flex items-center flex-shrink-0 relative group">
+                        <img id="nav-backend-logo" src="https://placehold.co/120x40/a855f7/ffffff?text=LOGO" alt="Shop Logo" class="h-8 md:h-9 object-contain rounded transition-transform group-hover:scale-105">
+                    </div>
 
                     <div class="flex-grow max-w-md w-full px-2 relative z-10 hidden sm:block">
                         <div class="relative w-full">
@@ -165,27 +162,27 @@
                     </div>
 
                 <div class="hidden lg:flex items-center gap-6 font-bold text-[14px] text-gray-400 flex-shrink-0">
-    <a href="index.html" class="flex items-center space-x-1.5 text-purple-400 transition font-semibold hover:scale-105 active:scale-95 duration-200">
-        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor" class="w-4 h-4">
-            <path stroke-linecap="round" stroke-linejoin="round" d="m2.25 12 8.954-8.955c.44-.439 1.152-.439 1.591 0L21.75 12M4.5 9.75v10.125c0 .621.504 1.125 1.125 1.125H9.75v-4.875c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125V21h4.125c.621 0 1.125-.504 1.125-1.125V9.75M8.25 21h8.25" />
-        </svg>
-        <span>ໜ້າຫຼັກ</span>
-    </a>
-    
-    <a href="category.html" class="flex items-center space-x-1.5 hover:text-purple-400 transition font-semibold hover:scale-105 active:scale-95 duration-200">
-        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor" class="w-4 h-4">
-            <path stroke-linecap="round" stroke-linejoin="round" d="M13.5 21v-7.5a.75.75 0 0 1 .75-.75h3a.75.75 0 0 1 .75.75V21m-4.5 0H2.36m11.14 0H18m0 0h3.64m-1.39 0V9.349M3.75 21V9.35m0 0a3.001 3.001 0 0 0 3.75-.615A2.999 2.999 0 0 0 9.75 9.75c.896 0 1.7-.393 2.25-1.016a2.999 2.999 0 0 0 2.25 1.016c.896 0 1.7-.393 2.25-1.016a3.001 3.001 0 0 0 3.75.614m-16.5 0a3.004 3.004 0 0 1-.621-4.72l1.4-6.195A1.5 1.5 0 0 1 5.378 3h13.243a1.5 1.5 0 0 1 1.06.44l1.19 1.189a3 3 0 0 1-.621 4.72M6.75 18h3.75a.75.75 0 0 0 .75-.75V13.5a.75.75 0 0 0-.75-.75H6.75a.75.75 0 0 0-.75.75v3.75c0 .415.336.75.75.75Z" />
-        </svg>
-        <span>ສິນຄ້າທົ່ວໄປ</span>
-    </a>
+                    <a href="index.html" class="flex items-center space-x-1.5 text-purple-400 transition font-semibold hover:scale-105 active:scale-95 duration-200">
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor" class="w-4 h-4">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="m2.25 12 8.954-8.955c.44-.439 1.152-.439 1.591 0L21.75 12M4.5 9.75v10.125c0 .621.504 1.125 1.125 1.125H9.75v-4.875c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125V21h4.125c.621 0 1.125-.504 1.125-1.125V9.75M8.25 21h8.25" />
+                        </svg>
+                        <span>ໜ້າຫຼັກ</span>
+                    </a>
+                    
+                    <a href="category.html" class="flex items-center space-x-1.5 hover:text-purple-400 transition font-semibold hover:scale-105 active:scale-95 duration-200">
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor" class="w-4 h-4">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M13.5 21v-7.5a.75.75 0 0 1 .75-.75h3a.75.75 0 0 1 .75.75V21m-4.5 0H2.36m11.14 0H18m0 0h3.64m-1.39 0V9.349M3.75 21V9.35m0 0a3.001 3.001 0 0 0 3.75-.615A2.999 2.999 0 0 0 9.75 9.75c.896 0 1.7-.393 2.25-1.016a2.999 2.999 0 0 0 2.25 1.016c.896 0 1.7-.393 2.25-1.016a3.001 3.001 0 0 0 3.75.614m-16.5 0a3.004 3.004 0 0 1-.621-4.72l1.4-6.195A1.5 1.5 0 0 1 5.378 3h13.243a1.5 1.5 0 0 1 1.06.44l1.19 1.189a3 3 0 0 1-.621 4.72M6.75 18h3.75a.75.75 0 0 0 .75-.75V13.5a.75.75 0 0 0-.75-.75H6.75a.75.75 0 0 0-.75.75v3.75c0 .415.336.75.75.75Z" />
+                        </svg>
+                        <span>ສິນຄ້າທົ່ວໄປ</span>
+                    </a>
 
-    <a href="contact.html" class="flex items-center space-x-1.5 hover:text-purple-400 transition font-semibold hover:scale-105 active:scale-95 duration-200">
-        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor" class="w-4 h-4">
-            <path stroke-linecap="round" stroke-linejoin="round" d="M20.25 8.511c.884.284 1.5 1.128 1.5 2.097v4.286c0 1.136-.847 2.1-1.98 2.193-.34.027-.68.052-1.02.072v3.091l-3-3c-1.354 0-2.694-.055-4.02-.163a2.115 2.115 0 0 1-.825-.242m9.345-8.334a2.126 2.126 0 0 0-.476-.095 48.64 48.64 0 0 0-8.048 0c-1.131.094-1.976 1.057-1.976 2.192v4.286c0 .837.46 1.58 1.155 1.951m9.345-8.334V6.637c0-1.621-1.152-3.026-2.76-3.235A48.455 48.455 0 0 0 11.25 3c-2.115 0-4.198.137-6.24.402-1.608.209-2.76 1.614-2.76 3.235v6.226c0 1.621 1.152 3.026 2.76 3.235.577.075 1.157.14 1.74.194V21l4.155-4.155" />
-        </svg>
-        <span>ຕິດຕໍ່ພວກເຮົາ</span>
-    </a>
-</div>
+                    <a href="contact.html" class="flex items-center space-x-1.5 hover:text-purple-400 transition font-semibold hover:scale-105 active:scale-95 duration-200">
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor" class="w-4 h-4">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M20.25 8.511c.884.284 1.5 1.128 1.5 2.097v4.286c0 1.136-.847 2.1-1.98 2.193-.34.027-.68.052-1.02.072v3.091l-3-3c-1.354 0-2.694-.055-4.02-.163a2.115 2.115 0 0 1-.825-.242m9.345-8.334a2.126 2.126 0 0 0-.476-.095 48.64 48.64 0 0 0-8.048 0c-1.131.094-1.976 1.057-1.976 2.192v4.286c0 .837.46 1.58 1.155 1.951m9.345-8.334V6.637c0-1.621-1.152-3.026-2.76-3.235A48.455 48.455 0 0 0 11.25 3c-2.115 0-4.198.137-6.24.402-1.608.209-2.76 1.614-2.76 3.235v6.226c0 1.621 1.152 3.026 2.76 3.235.577.075 1.157.14 1.74.194V21l4.155-4.155" />
+                        </svg>
+                        <span>ຕິດຕໍ່ພວກເຮົາ</span>
+                    </a>
+                </div>
                 </div>
 
                 <div class="w-full mt-3 sm:hidden relative z-10">
@@ -352,7 +349,7 @@
 
                 <div class="bg-[#0f0a19] border-t border-purple-900/50">
                     <div class="max-w-6xl mx-auto px-4 py-6 flex flex-col md:flex-row items-center justify-between gap-4 text-xs text-gray-500 font-medium text-center md:text-left">
-                        <p>© 2026 Recosrd. All rights reserved.</p>
+                        <a href="admin-dashboard.html" class="hover:text-purple-400 transition-colors cursor-pointer">© 2026 Recosrd. All rights reserved.</a>
                         <div class="flex gap-4 justify-center">
                             <a href="#" class="hover:text-purple-400 transition-colors">ເງື່ອນໄຊການໃໍ້</a>
                             <span class="text-gray-700">|</span>
@@ -364,7 +361,6 @@
             </div>
 
         <script>
-            // ================= ระบบ Toast แจ้งเตือนสวยๆ =================
             function showToast(title, message, type = 'success') {
                 const toast = document.getElementById('custom-toast');
                 const titleEl = document.getElementById('toast-title');
@@ -390,7 +386,6 @@
                 }, 3000);
             }
 
-            // ================= การทำงานเบื้องต้นของหน้าเว็บ =================
             let currentSlideIndex = 0;
             let maxSlides = 0;
             let slideDots = [];
@@ -414,7 +409,6 @@
                 beginAutoPlay();
             });
 
-            // --- Load Dynamic Settings ---
             function loadDynamicSiteSettings() {
                 const settings = JSON.parse(localStorage.getItem('mySiteSettingsDB')) || {};
                 
@@ -482,7 +476,6 @@
                 }
             }
 
-            // --- ระบบเลื่อนสไลด์โชว์ ---
             function changeSlide(idx) {
                 if (maxSlides <= 1) return;
 
@@ -646,7 +639,6 @@
                 }
             });
 
-            // ================= สร้างหิมะตก =================
             function createSnowflakes() {
                 const container = document.getElementById('glitter-container');
                 if(!container) return;
